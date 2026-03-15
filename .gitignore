@@ -11,7 +11,7 @@
 
 ### Eclipse ###
 .metadata
-src/build/
+**/build/
 bin/
 tmp/
 *.tmp
