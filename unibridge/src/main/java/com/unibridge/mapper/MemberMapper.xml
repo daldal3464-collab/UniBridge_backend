@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+   <!-- 회원가입 쿼리 작성 -->
+   <insert id="join" parameterType="MemberDTO">
+      INSERT INTO tbl_member(member_number, member_id, member_password, member_name,
+         member_age, member_gender, member_phone_number, member_postcode, member_address,
+         member_detail_addr)
+      VALUES (seq_member.nextval, #{memberId}, #{memberPassword}, #{memberName},
+      #{memberAge}, #{memberGender}, #{memberPhoneNumber}, #{memberPostcode}, #{memberAddress},
+      #{memberDetailAddr})
+   </insert>
+   
+   <!-- id 중복 검사 쿼리 작성 -->
+   <select id="checkId" parameterType="string" resultType="int">
+      SELECT count(member_number) FROM tbl_member
+      WHERE member_id = #{memberId}
+   </select>
+   
+   <!-- 로그인 쿼리 작성 -->
+   <select id="login" parameterType="MemberDTO" resultType="int">
+      SELECT member_number FROM tbl_member
+      WHERE member_id = #{memberId} and member_password = #{memberPassword}
+   </select>
+   
+   <!-- 멤버 번호에 해당하는 아이디 조회 쿼리 작성 -->
+   <select id="getMemberId" parameterType="int" resultType="string">
+      SELECT member_id FROM tbl_member
+      WHERE member_number = #{memberNumber}
+   </select>
+   
+</mapper>
