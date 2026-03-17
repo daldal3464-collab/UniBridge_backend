@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="ko">
 
 <head>
@@ -25,8 +26,8 @@
     <section class="adBanner">
       <div class="bannerContainer">
         <div class="bannerContent">
-          <h1 class="bannerLogo">DACON</h1>
-          <p class="bannerSubtitle">DATA TO VALUE</p>
+          <h1 class="bannerLogo">UNIBRIDGE</h1>
+          <p class="bannerSubtitle">멘토와 멘티를 잇는 다리</p>
         </div>
       </div>
     </section>
@@ -45,72 +46,46 @@
       <div class="contestSliderWrap">
         <div class="contestSliderTrack" id="contestSliderTrack">
 
-          <!-- 카드 1 -->
-          <div class="contestCard">
-            <div class="contestCardThumbEmpty">
-              <img src="${pageContext.request.contextPath}/assets/img/UniBridge.png" alt="이미지">
-            </div>
-            <p class="contestCardTitle">구조를 인공 슬라이 추천 AI 문제</p>
-            <p class="contestCardDate">2025.08.03</p>
-            <div class="contestCardTagList">
-              <span class="contestCardTag contestCardTagActive">진행 대회</span>
-              <span class="contestCardTag">딥러닝</span>
-              <span class="contestCardTag">Physics AI</span>
-              <span class="contestCardTag">Physic</span>
-            </div>
-          </div>
-
-          <!-- 카드 2 -->
-          <div class="contestCard">
-            <div class="contestCardThumbEmpty">이미지</div>
-            <p class="contestCardTitle">Almers 8기 : 모델 검증과 관리인 역방전</p>
-            <p class="contestCardDate">2025.08.02</p>
-            <div class="contestCardTagList">
-              <span class="contestCardTag contestCardTagActive">진행 대회</span>
-              <span class="contestCardTag">LG Almers</span>
-              <span class="contestCardTag">예둠</span>
-              <span class="contestCardTag">동고사용</span>
-            </div>
-          </div>
-
-          <!-- 카드 3 -->
-          <div class="contestCard">
-            <div class="contestCardThumbEmpty">이미지</div>
-            <p class="contestCardTitle">핵심 · 스텝 예발들을 위한 서비스 개발 경연</p>
-            <p class="contestCardDate">2014.11.04</p>
-            <div class="contestCardTagList">
-              <span class="contestCardTag contestCardTagActive">진행 대회</span>
-              <span class="contestCardTag">아이이관</span>
-              <span class="contestCardTag">서비예 변화</span>
-              <span class="contestCardTag">직상 관</span>
-            </div>
-          </div>
-
-          <!-- 카드 4 -->
-          <div class="contestCard">
-            <div class="contestCardThumbEmpty">이미지</div>
-            <p class="contestCardTitle">구조를 인공 슬라이 추천 AI 문제</p>
-            <p class="contestCardDate">2025.08.22</p>
-            <div class="contestCardTagList">
-              <span class="contestCardTag contestCardTagActive">진행 대회</span>
-              <span class="contestCardTag">딥러닝</span>
-              <span class="contestCardTag">Physics AI</span>
-              <span class="contestCardTag">Physic</span>
-            </div>
-          </div>
-
-          <!-- 카드 5 -->
-          <div class="contestCard">
-            <div class="contestCardThumbEmpty">이미지</div>
-            <p class="contestCardTitle">HAI하이미 - Hecto AI Challenge : 2</p>
-            <p class="contestCardDate">2025.12.25</p>
-            <div class="contestCardTagList">
-              <span class="contestCardTag contestCardTagActive">진행 대회</span>
-              <span class="contestCardTag">핵로 대회</span>
-              <span class="contestCardTag">Physics AI</span>
-              <span class="contestCardTag">핵 남앙</span>
-            </div>
-          </div>
+          <%-- DB 데이터가 있을 경우 동적 렌더링 --%>
+          <c:choose>
+            <c:when test="${not empty contestList}">
+              <c:forEach var="contest" items="${contestList}">
+                <div class="contestCard">
+                  <div class="contestCardThumbEmpty">
+                    <img src="${pageContext.request.contextPath}/assets/img/UniBridge.png" alt="대회 이미지" />
+                  </div>
+                  <p class="contestCardTitle">${contest.title}</p>
+                  <p class="contestCardDate">
+                    <fmt:formatDate value="${contest.endDate}" pattern="yyyy.MM.dd" />
+                  </p>
+                  <div class="contestCardTagList">
+                    <span class="contestCardTag contestCardTagActive">${contest.status}</span>
+                    <span class="contestCardTag">${contest.hostCompany}</span>
+                    <%-- techStack이 쉼표로 구분된 문자열이면 split 후 태그 생성 --%>
+                    <c:if test="${not empty contest.techStack}">
+                      <c:forEach var="tag" items="${fn:split(contest.techStack, ',')}">
+                        <span class="contestCardTag">${tag}</span>
+                      </c:forEach>
+                    </c:if>
+                  </div>
+                </div>
+              </c:forEach>
+            </c:when>
+            
+            <%-- DB 데이터 없을 경우 더미 카드 표시 --%>
+            <c:otherwise>
+              <div class="contestCard">
+                <div class="contestCardThumbEmpty">
+                  <img src="${pageContext.request.contextPath}/assets/img/UniBridge.png" alt="이미지" />
+                </div>
+                <p class="contestCardTitle">등록된 대회가 없습니다.</p>
+                <p class="contestCardDate">-</p>
+                <div class="contestCardTagList">
+                  <span class="contestCardTag">준비중</span>
+                </div>
+              </div>
+            </c:otherwise>
+          </c:choose>
 
         </div><%-- contestSliderTrack 닫힘 --%>
       </div><%-- contestSliderWrap 닫힘 --%>
@@ -124,82 +99,44 @@
 
       <div class="mentoRecommendList">
 
-        <!-- 멘토 1 -->
-        <div class="mentoRecommendCard" data-mento-id="1">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/UniBridge.png" alt="멘토 프로필" />
-          <p class="mentoRecommendName">한길대학교</p>
-          <p class="mentoRecommendSchool">인공지능학과</p>
-          <p class="mentoRecommendInfo">
-            Python<br />
-            오프라인 / 주 3회
-          </p>
-        </div>
+        <c:choose>
+          <c:when test="${not empty mentorCardList}">
+            <c:forEach var="mentor" items="${mentorCardList}">
+              <div class="mentoRecommendCard" data-mento-id="${mentor.mentorNumber}">
+                <%-- 프로필 이미지: member_profile(파일번호)가 있으면 파일 경로로, 없으면 기본 이미지 --%>
+                <c:choose>
+                  <c:when test="${mentor.memberProfile > 0}">
+                    <img class="mentoRecommendAvatar"
+                         src="${pageContext.request.contextPath}/assets/img/profile/${mentor.memberProfile}"
+                         alt="${mentor.memberNickname} 프로필" />
+                  </c:when>
+                  <c:otherwise>
+                    <img class="mentoRecommendAvatar"
+                         src="${pageContext.request.contextPath}/assets/img/UniBridge.png"
+                         alt="기본 프로필" />
+                  </c:otherwise>
+                </c:choose>
+                <p class="mentoRecommendName">${mentor.memberNickname}</p>
+                <p class="mentoRecommendSchool">${mentor.subjectName}</p>
+                <p class="mentoRecommendInfo">
+                  ${mentor.mentoringTitle}<br />
+                  ${mentor.mentoringGoal}
+                </p>
+              </div>
+            </c:forEach>
+          </c:when>
 
-        <!-- 멘토 2 -->
-        <div class="mentoRecommendCard" data-mento-id="2">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento2.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">미래공과대학교</p>
-          <p class="mentoRecommendSchool">컴퓨터소프트학과</p>
-          <p class="mentoRecommendInfo">
-            C언어<br />
-            오프라인 / 주 2회
-          </p>
-        </div>
-
-        <!-- 멘토 3 -->
-        <div class="mentoRecommendCard" data-mento-id="3">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento3.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">유니굴대학교</p>
-          <p class="mentoRecommendSchool">소프트웨어학부</p>
-          <p class="mentoRecommendInfo">
-            Java<br />
-            오프라인 / 주 2회
-          </p>
-        </div>
-
-        <!-- 멘토 4 -->
-        <div class="mentoRecommendCard" data-mento-id="4">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento4.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">연세대 수학과</p>
-          <p class="mentoRecommendSchool">수학과</p>
-          <p class="mentoRecommendInfo">
-            수학<br />
-            오프라인 / 주 3회
-          </p>
-        </div>
-
-        <!-- 멘토 5 -->
-        <div class="mentoRecommendCard" data-mento-id="5">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento5.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">연세대 국어국문과</p>
-          <p class="mentoRecommendSchool">국어국문학과</p>
-          <p class="mentoRecommendInfo">
-            국어<br />
-            오프라인 / 주 3회
-          </p>
-        </div>
-
-        <!-- 멘토 6 -->
-        <div class="mentoRecommendCard" data-mento-id="6">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento6.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">연세대 수학과</p>
-          <p class="mentoRecommendSchool">수학과</p>
-          <p class="mentoRecommendInfo">
-            과학<br />
-            오프라인 / 주 3회
-          </p>
-        </div>
-
-        <!-- 멘토 7 -->
-        <div class="mentoRecommendCard" data-mento-id="7">
-          <img class="mentoRecommendAvatar" src="${pageContext.request.contextPath}/assets/img/mento7.jpg" alt="멘토 프로필" />
-          <p class="mentoRecommendName">연세대 수학과</p>
-          <p class="mentoRecommendSchool">수학과</p>
-          <p class="mentoRecommendInfo">
-            수학<br />
-            오프라인 / 주 3회
-          </p>
-        </div>
+          <c:otherwise>
+            <div class="mentoRecommendCard">
+              <img class="mentoRecommendAvatar"
+                   src="${pageContext.request.contextPath}/assets/img/UniBridge.png"
+                   alt="기본 프로필" />
+              <p class="mentoRecommendName">멘토 없음</p>
+              <p class="mentoRecommendSchool">-</p>
+              <p class="mentoRecommendInfo">등록된 멘토가 없습니다.</p>
+            </div>
+          </c:otherwise>
+        </c:choose>
 
       </div>
     </section>
@@ -316,12 +253,6 @@
 
   <div id="footerContainer"></div>
 
-  <%--
-    원본 main.html:
-      <script src="/frontend/assets/js/header.js">  → 경로 수정 (동적 렌더링 코드 제거된 버전)
-      <script src="/frontend/assets/js/footer.js">  → 경로 수정 (빈 파일)
-      <script src="/frontend/assets/js/main.js">    → 경로 수정
-  --%>
   <script src="${pageContext.request.contextPath}/assets/js/user/header.js"></script>
   <script src="${pageContext.request.contextPath}/assets/js/user/footer.js"></script>
   <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
