@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/siginin/siginin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/signin/signin.css">
     <script defer src="${pageContext.request.contextPath}/assets/js/header.js"></script>
     <script defer src="${pageContext.request.contextPath}/assets/js/footer.js"></script>
-    <script defer src="${pageContext.request.contextPath}/assets/js/user/siginIn/login.js"></script>
+    <script defer src="${pageContext.request.contextPath}/assets/js/user/signin/login.js"></script>
 	<title>login</title>
 </head>
 <body>
