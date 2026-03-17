@@ -26,6 +26,7 @@
       <typeAlias type="com.unibridge.app.mypage.survey.dto.SurveyDTO" alias="SurveyDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.mypage.surveyMentee.dto.SurveyMenteeDTO" alias="SurveyMenteeDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.mypage.surveyMentor.dto.SurveyMentorDTO" alias="SurveyMentorDTO"></typeAlias>
+      <!-- <typeAlias type="com.unibridge.app.mypage.mentoring.dto.MentoringDTO" alias="MentoringDTO"></typeAlias -->
    </typeAliases>
 
    <environments default="oracle">
@@ -49,6 +50,8 @@
       
       <mapper resource="com/unibridge/mapper/SurveyMapper.xml" />
       <mapper resource="com/unibridge/mapper/FileMapper.xml" />
+      <!-- <mapper resource="com/unibridge/mapper/mentoringMapper.xml" /> -->
+      <mapper resource="com/unibridge/mapper/mainMapper.xml"/>
    </mappers>
    
 </configuration>

@@ -12,7 +12,7 @@ public class MyBatisConfig {
    
    static {
       try {
-         String resource = "./com/unibridge/config/config.xml";
+         String resource = "com/unibridge/config/config.xml";
          
          Reader reader = Resources.getResourceAsReader(resource);
          

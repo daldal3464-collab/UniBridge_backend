@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.unibridge.app.Execute;
 import com.unibridge.app.Result;
@@ -20,7 +21,7 @@ public class MentorDetailOkController implements Execute {
 	    // 세션에서 로그인 정보 확인 (예: memberNumber가 세션에 저장되어 있다고 가정)
 		// 1. 세션에서 로그인된 회원 번호 확인
 	    Object loginNum = request.getSession().getAttribute("memberNumber");
-	    
+	    HttpSession session = request.getSession();
 	    Result result = new Result();
 
 	    // 2. 로그인 여부 검사
@@ -31,6 +32,11 @@ public class MentorDetailOkController implements Execute {
 //	        result.setRedirect(true); // 주소창을 로그인 페이지로 바꾸기 위해 true 설정
 //	        return result; // 이후 로직(DB 조회 등)을 실행하지 않고 바로 종료
 //	    }
+	    if (session.getAttribute("memberNumber") == null) {
+            session.setAttribute("memberNumber", 22L); // DB에 존재하는 임시 멘티 번호
+            session.setAttribute("memberType", "MENTEE");
+            session.setAttribute("memberName", "임시멘티");
+        }
 
 	    // --- 여기서부터는 로그인된 사용자만 실행됨 ---
 	    

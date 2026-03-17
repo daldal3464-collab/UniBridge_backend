@@ -27,6 +27,7 @@ public class MentorSearchDAO {
 	}
 
 	public MentorSearchDTO selectMentorDetail(long memberNumber) {
+		System.out.println("현재 연결 시도 주소: " + sqlSession.getConfiguration().getEnvironment().getDataSource());
 		return sqlSession.selectOne("mentorSearch.selectMentorDetail", memberNumber);
 	}
 }
