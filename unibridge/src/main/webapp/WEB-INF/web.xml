@@ -13,9 +13,9 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.xhtml</welcome-file>
-		<welcome-file>main.jsp</welcome-file>
+		<welcome-file>index.main</welcome-file>
 	</welcome-file-list>
-	
+
 	<!-- 결제 페이지 -->
 	<servlet>
 		<servlet-name>Pay</servlet-name>
@@ -36,7 +36,7 @@
 		<servlet-name>MentorSearch</servlet-name>
 		<url-pattern>*.sch</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- 회원가입, 로그인 -->
 	<servlet>
 		<servlet-name>Member</servlet-name>
@@ -46,11 +46,11 @@
 		<servlet-name>Member</servlet-name>
 		<url-pattern>*.mem</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- 마이페이지 -->
 	<servlet>
 		<servlet-name>Mypage</servlet-name>
-		<servlet-class>com.unibridge.app.mypage.MypageFrontController</servlet-class>
+		<servlet-class>com.unibridge.app.mentorSearch.controller.MentorSearchFrontController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Mypage</servlet-name>
@@ -100,7 +100,7 @@
 	<!-- 메인페이지 -->
 	<servlet>
 		<servlet-name>Main</servlet-name>
-		<servlet-class>com.unibridge.app.main.controller.MainFrontController</servlet-class>
+		<servlet-class>com.unibridge.app.main.MainFrontController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Main</servlet-name>

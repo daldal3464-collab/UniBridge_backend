@@ -27,7 +27,7 @@
 
         <!-- 공통 네비게이션 -->
         <nav class="headerNav">
-            <a href="${pageContext.request.contextPath}/mentorSearch/mentorSearch.jsp">멘토 검색</a>
+            <a href="${pageContext.request.contextPath}/mentor/mentorSearchOk.sch">멘토 검색</a>
             <a href="${pageContext.request.contextPath}/mentee/menteeBoard/menteeBoardList.jsp">게시판</a>
             <a href="${pageContext.request.contextPath}/notice/report.jsp">학습보고서</a>
             <a href="${pageContext.request.contextPath}/announceBoard.jsp">공지사항</a>

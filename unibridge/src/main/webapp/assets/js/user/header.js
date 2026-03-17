@@ -33,13 +33,14 @@
         <img src="${base}/assets/img/UniBridge.png" alt="UniBridge" />
       </a>
       <nav class="headerNav">
-        <a href="${base}/app/user/mentorSearch/mentorSearch.jsp">멘토 검색</a>
+       	<a href="${base}/mentor/mentorSearchOk.sch" id="test-mentor-link">멘토 검색</a>
         <a href="${base}/app/user/mentee/menteeBoard/menteeBoardList.jsp">게시판</a>
         <a href="${base}/app/user/notice/report.jsp">학습보고서</a>
         <a href="${base}/announceBoard.jsp">공지사항</a>
       </nav>
     `;
 
+	
     const authSection = !authState.loggedIn ? `
       <div class="headerAuthGroup">
         <a href="${base}/app/user/siginUp/terms.jsp" class="headerBtnText">회원가입</a>
@@ -67,6 +68,8 @@
       </header>
     `;
   };
+  
+  console.log("현재 설정된 멘토검색 주소: ", document.getElementById('test-mentor-link')?.href);
 
   // 3. 렌더링 함수
   function renderHeader() {
