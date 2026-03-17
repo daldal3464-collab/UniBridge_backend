@@ -42,7 +42,9 @@
       <!-- <mapper resource="com/unibridge/mapper/BoardMapper.xml" /> -->
       <mapper resource="com/unibridge/mapper/payMapper.xml" />
       <mapper resource="com/unibridge/mapper/mentorSearchMapper.xml" />
+
       <!-- <mapper resource="com/unibridge/mapper/mentoringMapper.xml" /> -->
+      <mapper resource="com/unibridge/mapper/mainMapper.xml"/>
    </mappers>
    
 </configuration>
