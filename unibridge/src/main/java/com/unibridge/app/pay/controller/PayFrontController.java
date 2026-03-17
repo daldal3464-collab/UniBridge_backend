@@ -23,18 +23,22 @@ public class PayFrontController extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		// properties 파일을 읽어오는 로직 (ConfigReader를 사용 중이라면 생략 가능하지만 유지합니다)
-		Properties props = new Properties();
-		try (InputStream is = getClass().getClassLoader().getResourceAsStream("config/api.properties")) {
-			if (is != null) {
-				props.load(is);
-				this.kakaoSecretKey = props.getProperty("kakao.secret.key");
-			} else {
-				System.err.println(">>> [ERROR] api.properties 파일을 찾을 수 없습니다.");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    Properties props = new Properties();
+	    // [수정] 파일명을 context.properties로, 경로를 정확하게 맞춤
+	    try (InputStream is = getClass().getClassLoader().getResourceAsStream("context.properties")) {
+	        if (is != null) {
+	            props.load(is);
+	            // context.properties 안에 있는 키값으로 가져옴
+	            this.kakaoSecretKey = props.getProperty("kakao.secret.key");
+	            System.out.println(">>> [LOG] 카카오 시크릿 키 로드 완료");
+	        } else {
+	            // [참고] 파일이 src/main/resources/config/ 폴더 안에 있다면 
+	            // "config/context.properties"로 경로를 수정해야 합니다.
+	            System.err.println(">>> [ERROR] context.properties 파일을 찾을 수 없습니다.");
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override
@@ -64,6 +68,12 @@ public class PayFrontController extends HttpServlet {
 	        System.out.println(">>> [1] 결제 정보 확인 페이지 이동");
 	        // 별도의 DB 조회가 필요 없다면 바로 Result 객체 생성, 필요하다면 Controller 호출
 	        result = new PaymentController().execute(request, response);
+	        
+	        if(result == null) {
+	            System.out.println(">>> [ERROR] PaymentController가 null을 리턴했습니다!");
+	        } else {
+	            System.out.println(">>> [DEBUG] 이동 경로: " + result.getPath());
+	        }
 	    } 
 	    // 2. 결제 페이지에서 '카카오페이 결제' 버튼 클릭 시 -> API 준비 단계
 	    else if (target.contains("/paymentOk.pay")) {
