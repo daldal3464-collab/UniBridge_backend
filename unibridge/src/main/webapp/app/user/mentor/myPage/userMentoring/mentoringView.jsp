@@ -12,7 +12,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/fonts.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/user/mentor/myPage/userMentoCreate/mentoringView.css">
+	href="${pageContext.request.contextPath}/assets/css/user/mentor/myPage/userMentoing/mentoringView.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/header.css">
 <link rel="stylesheet"
@@ -27,9 +27,7 @@
 	src="${pageContext.request.contextPath}/assets/js/footer.js"></script>
 </head>
 <body>
-	<header>
-		<!-- <div id="headerContainer"></div> -->
-	</header>
+	<jsp:include page="/app/user/header.jsp" />
 
 	<div class="mainContainer">
 		<aside>
