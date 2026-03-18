@@ -1,8 +1,7 @@
 package com.unibridge.app.mypage.mentoring.dto;
 
 public class MentoringDTO {
-
-	private int interanlId;
+	private int internalId;
 	private int mentorNumber;
 	private int subjectNumber;
 	private String mentoringTitle;
@@ -12,14 +11,13 @@ public class MentoringDTO {
 	private String createAt;
 	private String updateAt;
 
-	
-	// getter, setter
-	public int getInteranlId() {
-		return interanlId;
+	// Getter & Setter (철자 주의: InternalId)
+	public int getInternalId() {
+		return internalId;
 	}
 
-	public void setInteranlId(int interanlId) {
-		this.interanlId = interanlId;
+	public void setInternalId(int internalId) {
+		this.internalId = internalId;
 	}
 
 	public int getMentorNumber() {
@@ -85,5 +83,4 @@ public class MentoringDTO {
 	public void setUpdateAt(String updateAt) {
 		this.updateAt = updateAt;
 	}
-
 }

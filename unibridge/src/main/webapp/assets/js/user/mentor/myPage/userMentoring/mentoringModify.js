@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // 삭제 함수 (JSP에서 호출)
-function deleteMentoring(num) {
+function deleteMentoring(internalId) {
     if(confirm("정말로 이 멘토링을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.")) {
         // .mo는 프로젝트 컨트롤러 확장자에 맞춰 수정하세요
-        location.href = "/mentoringDeleteOk.mo?mentoringNumber=" + num;
+        location.href = "/mentoringDeleteOk.mo?mentoringinternalId=" + internalId;
     }
 }

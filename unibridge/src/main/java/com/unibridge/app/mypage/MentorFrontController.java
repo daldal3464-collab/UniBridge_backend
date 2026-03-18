@@ -19,35 +19,38 @@ public class MentorFrontController implements Execute {
 	
 	@Override
 	public Result execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String requestURI = request.getRequestURI();
-		String target = extractTargetPath(requestURI);
-		switch (target) {
-		case  "myPage.my":
-		case "/myPage.my":
-			this.outResult = new MentorController().execute(request, response);
-			break;
-		case  "delete.my":
-		case "/delete.my":
-			this.outResult = new MentorDeleteController().execute(request, response);
-			break;
-		case "survey.my":
-		case "/survey.my":
-			System.out.println("멘토 설문 등록 요청 수신");
-			this.outResult = new SurveyMentorController().execute(request, response);
-			break;
-		case "mentoringWriteOk.my":
-		case "mentoringView.my":
-		case "mentoringModify.my":
-		case "mentoringModifyOk.my":
-		case "mentoringDeleteOk.my":
-			System.out.println("멘토 메토링 페이지 요청");
-			this.outResult = new MentoringFrontController().execute(request, response);
-		    break;
-		default:
-			break;
-		}
-		return outResult;
+	        throws ServletException, IOException {
+	    String requestURI = request.getRequestURI();
+	    String target = extractTargetPath(requestURI);
+	    
+	    System.out.println("[Log] MentorFrontController target: " + target);
+
+	    switch (target) {
+	        case "myPage.my":
+	            this.outResult = new MentorController().execute(request, response);
+	            break;
+	        case "delete.my":
+	            this.outResult = new MentorDeleteController().execute(request, response);
+	            break;
+	        case "survey.my":
+	            this.outResult = new SurveyMentorController().execute(request, response);
+	            break;
+	            
+	        // 멘토링 관련 요청들을 모두 MentoringFrontController로 토스
+	        case "mentoringCreate.my":
+	        case "mentoringWriteOk.my":
+	        case "mentoringView.my":
+	        case "mentoringModify.my":
+	        case "mentoringModifyOk.my":
+	        case "mentoringDeleteOk.my":
+	            System.out.println("[Log] 멘토링 관련 요청 -> MentoringFrontController로 이동");
+	            this.outResult = new MentoringFrontController().execute(request, response);
+	            break;
+	        default:
+	            System.out.println("[Warn] 매칭되는 target이 없음: " + target);
+	            break;
+	    }
+	    return outResult;
 	}
 	
 	private String extractTargetPath(String requestUri) {

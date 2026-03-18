@@ -24,8 +24,8 @@
 			<div class="myPageTitle">마이페이지</div>
 			<ul>
 				<li><a
-					href="${pageContext.request.contextPath}/app/user/mentor/myPage/myPage.jsp">계정
-						관리</a></li>
+					href="${pageContext.request.contextPath}/app/user/mentor/myPage/myPage.jsp"
+					class="active">계정 관리</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/app/user/mentor/myPage/userSurvey/userSurvey.jsp">설문
 						조사</a></li>
@@ -33,7 +33,7 @@
 					href="${pageContext.request.contextPath}/app/user/mentor/myPage/userMatching/userMatching.jsp">매칭
 						정보</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/app/user/mentor/myPage/userMentoing/mentoringCreate.jsp"
+					href="${pageContext.request.contextPath}/app/user/mentor/myPage/userMentoring/mentoringCreate.jsp"
 					class="active">멘토링</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/app/user/mentor/myPage/userDelete/userDelete.jsp">회원
@@ -53,7 +53,7 @@
 			<div id="contentsMain">
 				<div id="mentoringBackground">
 					<form
-						action="${pageContext.request.contextPath}/mentoringModifyOk.mo"
+						action="${pageContext.request.contextPath}/auth/mentor/mentoringModifyOk.mo"
 						method="post" enctype="multipart/form-data">
 						<%-- 수정용 hidden 데이터 --%>
 						<input type="hidden" name="mentoringNumber"
@@ -113,7 +113,7 @@
 								onclick="history.back()">취소</button>
 							<button type="button" id="delBtn"
 								style="border-color: #ff4d4d; color: #ff4d4d;"
-								onclick="deleteMentoring(${mentoring.mentoringNumber})">삭제하기</button>
+								onclick="deleteMentoring(${mentoring.internalId})">삭제하기</button>
 						</div>
 					</form>
 				</div>
@@ -124,9 +124,9 @@
 	<jsp:include page="/app/user/footer.jsp" />
 
 	<script>
-		function deleteMentoring(num) {
+		function deleteMentoring(internalId) {
 			if(confirm("정말로 이 멘토링을 삭제하시겠습니까?")) {
-				location.href = "${pageContext.request.contextPath}/mentoringDeleteOk.mo?mentoringNumber=" + num;
+				location.href = "${pageContext.request.contextPath}/mentoringDeleteOk.mo?mentoringinternalId=" + internalId;
 			}
 		}
 	</script>

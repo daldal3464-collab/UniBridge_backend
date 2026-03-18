@@ -3,15 +3,15 @@
  */
 
 // 삭제 버튼 클릭 시
-function deleteMentoring(mentoringNumber) {
-    if(confirm("정말로 이 멘토링을 삭제하시겠습니까? 관련 데이터가 모두 삭제됩니다.")) {
-        // 컨트롤러의 삭제 경로로 이동
-        location.href = contextPath + "/mentoringDeleteOk.mo?mentoringNumber=" + mentoringNumber;
+function deleteMentoring(internalId) {
+    if(confirm("정말로 이 멘토링을 삭제하시겠습니까?")) {
+        // 경로에 id 파라미터명 확인
+        location.href = "mentoringDelete.my?id=" + internalId;
     }
 }
 
-function goToModify(mentoringNumber) {
-    location.href = contextPath + "/mentoringModify.mo?mentoringNumber=" + mentoringNumber;
+function goToModify(internalId) {
+    location.href = contextPath + "mentoringModify.my?id=" + internalId;
 }
 
 // 입력 폼 유효성 검사 (Create/Modify 공통)
@@ -38,5 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-
+// 수정 페이지 이동 시에도 internalId 사용
+function goToModify(internalId) {
+    location.href = contextPath + "mentoringModify.my?id=" + internalId;
+}
 

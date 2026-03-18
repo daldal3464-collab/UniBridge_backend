@@ -1,9 +1,12 @@
 package com.unibridge.app.mypage.mentoring.controller;
 
+import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.unibridge.app.Execute;
@@ -12,64 +15,86 @@ import com.unibridge.app.mypage.mentoring.dao.MentoringDAO;
 import com.unibridge.app.mypage.mentoring.dto.MentoringDTO;
 
 public class MentoringWriteOkController implements Execute {
-    @Override
-    public Result execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("[Log] MentoringWriteOkController 진입");
-        
-        MentoringDAO mentoringDAO = new MentoringDAO();
-        MentoringDTO mentoringDTO = new MentoringDTO();
-        Result result = new Result();
+	@Override
+	public Result execute(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        // 1. 파일 업로드 경로 설정 및 확인
-        String uploadPath = request.getServletContext().getRealPath("/") + "upload/";
-        System.out.println("[Log] 업로드 실제 경로: " + uploadPath);
-        
-        int fileSize = 1024 * 1024 * 5; // 5MB
+		System.out.println("=========================================");
+		System.out.println("[Log] MentoringWriteOkController 시작");
+		
+		MentoringDAO mentoringDAO = new MentoringDAO();
+		MentoringDTO mentoringDTO = new MentoringDTO();
+		Result result = new Result();
+		
+		// 세션에서 로그인한 유저의 번호 가져오기
+		HttpSession session = request.getSession();
+		// 로그인 시 세션에 저장한 키값이 "memberNumber"라고 가정합니다.
+		Integer loginUserNumber = (Integer) session.getAttribute("memberNumber");
 
-        try {
-            // 2. MultipartRequest 객체 생성 (이 시점에 파일이 서버에 저장됨)
-            MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8", new DefaultFileRenamePolicy());
-            System.out.println("[Log] MultipartRequest 객체 생성 성공");
+		// 1. 파일 업로드 경로 설정
+		String uploadPath = request.getServletContext().getRealPath("/") + "upload/";
+		int fileSize = 1024 * 1024 * 5; // 5MB
 
-            // 3. 데이터 수집 로그 출력 (JSP name 속성 매칭 확인)
-            String title = multi.getParameter("mentoringTitle");
-            String subject = multi.getParameter("mentoringSubject");
-            String curriculum = multi.getParameter("mentoringCurriculum");
-            String fileName = multi.getFilesystemName("mentoringFile"); // 업로드된 파일명 확인
+		try {
+			// 2. 폴더 생성
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
 
-            System.out.println("[Log] 수집 데이터 - 제목: " + title);
-            System.out.println("[Log] 수집 데이터 - 과목: " + subject);
-            System.out.println("[Log] 수집 데이터 - 상세: " + curriculum);
-            System.out.println("[Log] 수집 데이터 - 파일명: " + fileName);
-            
-            // 4. DTO 데이터 세팅
-            mentoringDTO.setMentoringTitle(title);
-            mentoringDTO.setMentoringGoal(subject); 
-            mentoringDTO.setMentoringDetail(curriculum);
-            // mentoringDTO.setFileName(fileName); // DTO에 파일명 필드가 있다면 추가
-            
-            // TODO: 실제 세션 연동 시 아래 주석 해제
-            // int mentorNumber = (Integer)request.getSession().getAttribute("mentorNumber");
-            int mentorNumber = 1; 
-            mentoringDTO.setMentorNumber(mentorNumber);
-            System.out.println("[Log] 멘토 번호 세팅: " + mentorNumber);
+			// 3. 파일 업로드 실행 (MultipartRequest 생성)
+			MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8",
+					new DefaultFileRenamePolicy());
 
-            // 5. DAO 실행 및 로그
-            System.out.println("[Log] DB Insert 시도...");
-            mentoringDAO.insert(mentoringDTO);
-            System.out.println("[Log] DB Insert 완료");
-            
-            // 6. 이동 경로 설정
-            result.setPath(request.getContextPath() + "/mentoringList.mo");
-            result.setRedirect(true);
-            System.out.println("[Log] 리다이렉트 경로 설정: " + result.getPath());
-            
-        } catch (Exception e) {
-            System.out.println("[Error] MentoringWriteOkController 실행 중 예외 발생!");
-            System.out.println("[Error] 메시지: " + e.getMessage());
-            e.printStackTrace();
-        }
+			// 4. 데이터 수집
+			String title = multi.getParameter("mentoringTitle");
+			String subject = multi.getParameter("mentoringSubject"); // 과목 ID (숫자)
+			String goal = multi.getParameter("mentoringPurpose");    // 목적
+			String detail = multi.getParameter("mentoringCurriculum"); // 상세 내용
+			String systemFileName = multi.getFilesystemName("mentoringFile"); // 실제 저장된 파일명
 
-        return result;
-    }
+			// 5. DTO 데이터 세팅
+			// 로그인 체크 (로그인 안 되어 있으면 21번으로 임시 세팅하거나 에러 처리)
+			if (loginUserNumber == null) {
+				System.out.println("[Warn] 세션에 유저 정보가 없음 - 테스트용 21번 세팅");
+				mentoringDTO.setMentorNumber(21); 
+			} else {
+				mentoringDTO.setMentorNumber(loginUserNumber);
+			}
+
+			mentoringDTO.setSubjectNumber(Integer.parseInt(subject));
+			mentoringDTO.setMentoringTitle(title);
+			mentoringDTO.setMentoringGoal(goal);
+			mentoringDTO.setMentoringDetail(detail);
+			
+			// 파일 번호 처리: 현재 DB가 FK 구조이므로 실제 파일 테이블 insert가 선행되어야 하나,
+			// 우선 데이터 확인을 위해 1번(기본값) 혹은 파일명을 활용하도록 세팅
+			mentoringDTO.setFileNumber(1); 
+
+			// 6. DB Insert 실행 (단 한 번만 호출!)
+			System.out.println("[Step 6] DB Insert 실행 중...");
+			mentoringDAO.insert(mentoringDTO); 
+			
+			// selectKey에 의해 DTO에 담긴 생성된 PK 값 가져오기
+			int createdId = mentoringDTO.getInternalId();
+			System.out.println("[Step 6] DB Insert 성공! 생성된 ID: " + createdId);
+
+			// 7. 성공 시 상세페이지로 이동
+			// 파라미터명은 MentoringViewController에서 받는 이름과 일치해야 함 (mentoringNumber)
+			String successPath = "/auth/mentor/mentoringView.my?mentoringNumber=" + createdId;
+			result.setPath(successPath);
+			result.setRedirect(true);
+
+		} catch (Exception e) {
+			System.out.println("[Error] 예외 발생: " + e.getMessage());
+			e.printStackTrace();
+			// 에러 시 마이페이지로 이동
+			result.setPath("/auth/mentor/myPage.my");
+			result.setRedirect(true);
+		}
+
+		System.out.println("[Log] MentoringWriteOkController 종료");
+		System.out.println("=========================================");
+		return result;
+	}
 }

@@ -19,14 +19,13 @@ public class MentoringDAO {
 	
 	// 멘토링 등록
 	public void insert(MentoringDTO mentoringDTO) {
-		System.out.println("[DAO] insert 호출됨 - 제목: " + mentoringDTO.getMentoringTitle());
-		try {
-			int result = sqlSession.insert("mentoring.insert", mentoringDTO);
-			System.out.println("[DAO] insert 성공 여부 (영향받은 행 수): " + result);
-		} catch (Exception e) {
-			System.out.println("[DAO] insert 중 오류 발생!");
-			e.printStackTrace();
-		}
+	    try {
+	        sqlSession.insert("mentoring.insert", mentoringDTO);
+	    } catch (Exception e) {
+	        System.out.println("[DAO] insert 중 오류 발생!");
+	        e.printStackTrace();
+	        throw e; // ★ 중요: 에러를 위로 던져야 컨트롤러가 멈춥니다!
+	    }
 	}
 	
 	// 멘토링 상세 조회
@@ -49,7 +48,7 @@ public class MentoringDAO {
 	
 	// 멘토링 수정
 	public void update(MentoringDTO mentoringDTO) {
-		System.out.println("[DAO] update 호출됨 - 수정 대상 ID: " + mentoringDTO.getInteranlId());
+		System.out.println("[DAO] update 호출됨 - 수정 대상 ID: " + mentoringDTO.getInternalId());
 		try {
 			int result = sqlSession.update("mentoring.update", mentoringDTO);
 			System.out.println("[DAO] update 성공 여부 (영향받은 행 수): " + result);
@@ -70,4 +69,6 @@ public class MentoringDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

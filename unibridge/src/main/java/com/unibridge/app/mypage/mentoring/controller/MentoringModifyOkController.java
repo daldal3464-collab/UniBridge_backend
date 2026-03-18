@@ -50,7 +50,7 @@ public class MentoringModifyOkController implements Execute {
 
             // 4. DTO 데이터 세팅
             int mentoringNumber = Integer.parseInt(mentoringNumberStr);
-            dto.setInteranlId(mentoringNumber); // DTO의 오타(interanlId) 주의
+            dto.setInternalId(mentoringNumber); // DTO의 오타(interanlId) 주의
             dto.setMentoringTitle(title);
             dto.setMentoringGoal(purpose);
             dto.setMentoringDetail(curriculum);
@@ -61,7 +61,7 @@ public class MentoringModifyOkController implements Execute {
             System.out.println("[Log] DB Update 완료");
 
             // 6. 결과 페이지 설정 (상세보기로 리다이렉트)
-            result.setPath(request.getContextPath() + "/mentoringView.mo?mentoringNumber=" + mentoringNumber);
+            result.setPath(request.getContextPath() + "/mentoringView.my?mentoringNumber=" + mentoringNumber);
             result.setRedirect(true);
             System.out.println("[Log] 리다이렉트 경로: " + result.getPath());
             
