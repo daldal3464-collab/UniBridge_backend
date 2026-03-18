@@ -1,21 +1,7 @@
 package com.unibridge.app.mypage.mentoring.dto;
 
 public class MentoringDTO {
-//	CREATE TABLE UB_MENTORING (
-//		    INTERNAL_ID      VARCHAR2(64),
-//		    MENTOR_NUMBER    NUMBER NOT NULL UNIQUE, 
-//		    SUBJECT_NUMBER   NUMBER NOT NULL,
-//		    MENTORING_TITLE  VARCHAR2(100) NOT NULL,
-//		    MENTORING_GOAL   VARCHAR2(255) NOT NULL,
-//		    MENTORING_DETAIL VARCHAR2(2000), 
-//		    FILE_NUMBER      NUMBER, 
-//		    CREATED_AT       TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-//		    UPDATED_AT       TIMESTAMP,
-//		    CONSTRAINT pk_ub_mentoring PRIMARY KEY (INTERNAL_ID),
-//		    CONSTRAINT fk_ub_mentoring_subject FOREIGN KEY (SUBJECT_NUMBER) REFERENCES UB_SUBJECT (SUBJECT_NUMBER),
-//		    CONSTRAINT fk_ub_mentoring_mentor FOREIGN KEY (MENTOR_NUMBER) REFERENCES UB_MEMBER (MEMBER_NUMBER),
-//		    CONSTRAINT fk_ub_mentoring_file FOREIGN KEY (FILE_NUMBER) REFERENCES UB_FILE (file_number)
-//		);
+
 	private int interanlId;
 	private int mentorNumber;
 	private int subjectNumber;
