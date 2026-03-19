@@ -4,15 +4,15 @@
 <mapper namespace="admin">
 
 	<!-- 관리자 로그인 -->
-	<select id="adminlogin" parameterType="AdminDTO" resultType="AdminDTO">
-		SELECT admin_number, admin_id, admin_nickname
+	<select id="adminlogin" parameterType="AdminDTO" resultType="int">
+		SELECT admin_number
 		FROM UB_ADMIN
 		WHERE admin_id = #{adminId} and admin_pw = #{adminPw}
 	</select>
 	
 	<!-- 메인페이지  -->
 	<select id="membertotal" resultType="int">
-		SELECT count(*) FROM UB_MEMBER;
+		SELECT count(*) FROM UB_MEMBER
 	</select>
 	
 	<select id="mentortotal" resultType="int">
@@ -20,14 +20,16 @@
 	</select>
 	
 	<select id="menteetotal" resultType="int">
-		SELECT count(*) FROM UB_MEMBER WHERE MEMBER_TYPE = 'MENTO'
+		SELECT count(*) FROM UB_MEMBER WHERE MEMBER_TYPE = 'MENTEE'
 	</select>
 	
 	<select id="matchingtotal" resultType="int">
 		SELECT count(*) FROM UB_MATCHING
 	</select>
 	
+	
 	<select id="recentboard" resultType="AdMainDTO">
+	<![CDATA[
 		SELECT * 
 		FROM (
 		SELECT  umb.board_title, umb.board_date
@@ -37,17 +39,21 @@
 		FROM UB_MENTOR_BOARD umb
 		ORDER BY board_date)
 		WHERE ROWNUM <= 5
+	]]>
 	</select>
+
+	
 	
 	<select id="recentMember" resultType="AdMainDTO">
+	<![CDATA[
 		SELECT * 
 		FROM (
 		SELECT MEMBER_NAME, MEMBER_type, member_date 
 		FROM UB_MEMBER
 		ORDER BY member_date)
-		WHERE ROWNUM <= 5;
+		WHERE ROWNUM <= 5
+	]]>
 	</select>
-	
 	
 	
 	

@@ -17,16 +17,16 @@ public class AdminLoginController implements Execute{
 			throws ServletException, IOException {
 		
 		Result result = new Result();
-		Cookie[] cookies = request.getCookies();
-		
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				if(cookie.getName().equals("adminId")) {
-					request.setAttribute("adminId", cookie.getValue());
-				}
-			}
-		}
-		
+//		Cookie[] cookies = request.getCookies();
+//		
+//		if(cookies != null) {
+//			for(Cookie cookie : cookies) {
+//				if(cookie.getName().equals("adminId")) {
+//					request.setAttribute("adminId", cookie.getValue());
+//				}
+//			}
+//		}
+//		
 		result.setPath("/app/admin/adminLogin/login.jsp");
 		result.setRedirect(false);
 		return result;

@@ -26,7 +26,8 @@
       <typeAlias type="com.unibridge.app.mypage.surveyMentee.dto.SurveyMenteeDTO" alias="SurveyMenteeDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.mypage.surveyMentor.dto.SurveyMentorDTO" alias="SurveyMentorDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.mypage.mentoring.dto.MentoringDTO" alias="MentoringDTO"></typeAlias>
-      <typeAlias type="com.unibridge.app.admin.dto.adminDTO" alias="AdminDTO"></typeAlias>
+      <typeAlias type="com.unibridge.app.admin.dto.AdminDTO" alias="AdminDTO"></typeAlias>
+      <typeAlias type="com.unibridge.app.admin.dto.AdMainDTO" alias="AdMainDTO"></typeAlias>
    </typeAliases>
 
    <environments default="oracle">

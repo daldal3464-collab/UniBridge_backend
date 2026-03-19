@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.unibridge.app.Result;
 import com.unibridge.app.admin.controller.AdminLoginController;
+import com.unibridge.app.admin.controller.AdminLoginOkController;
 import com.unibridge.app.admin.controller.AdminReportController;
 
 public class AdminFrontController extends HttpServlet {
@@ -39,11 +40,20 @@ public class AdminFrontController extends HttpServlet {
 			result = new AdminLoginController().execute(request, response);
 			System.out.println("로그인 화면 출력 완료");
 			break;
-		
+			
+		case "loginOk.admin":
+		case "/loginOk.admin":
+			System.out.println("로그인 확인 준비");
+			result = new AdminLoginOkController().execute(request,response);
+			System.out.println("로그인 확인 완료");
+			break;
+			
+			
 		case  "report.admin":
 		case "/report.admin":
 			result = new AdminReportController().execute(request, response);
 			break;
+			
 		case  "userMM.admin":
 		case "/userMM.admin":
 			break;
@@ -52,13 +62,13 @@ public class AdminFrontController extends HttpServlet {
 			return;
 		}
 		
-	    if (result != null) {
-	        if (result.isRedirect()) {
-	            response.sendRedirect(result.getPath());
-	        } else {
-	            request.getRequestDispatcher(result.getPath()).forward(request, response);
-	        }
-	    }
+		if(result != null && result.getPath() != null) {
+			if(result.isRedirect()) {
+				response.sendRedirect(result.getPath());
+			} else {
+				request.getRequestDispatcher(result.getPath()).forward(request, response);
+			}
+		}
 	}
 	
 	private String extractTargetPath(String requestUri) {
