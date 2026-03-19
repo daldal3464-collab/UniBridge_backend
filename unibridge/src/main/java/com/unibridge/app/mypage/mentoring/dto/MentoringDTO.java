@@ -1,97 +1,104 @@
 package com.unibridge.app.mypage.mentoring.dto;
 
 public class MentoringDTO {
-	private int internalId;
-	private int mentorNumber;
-	private int subjectNumber;
-	private String mentoringTitle;
-	private String mentoringGoal;
-	private String mentoringDetail;
-	private int fileNumber;
-	private String fileName;
-	private String createAt;
-	private String updateAt;
+    // 필드명 변경: internalId -> mentoringNumber
+    private long mentoringNumber; 
+    private long mentorNumber;
+    private int subjectNumber;
+    private String mentoringTitle;
+    private String mentoringGoal;
+    private String mentoringDetail;
+    private Long fileNumber; // NULL 허용을 위해 Wrapper 클래스 권장
+    private String fileName;
+    private String createdAt; // DB 컬럼명 CREATED_AT과 일치 유도
+    private String updatedAt;
 
-	// Getter & Setter (철자 주의: InternalId)
-	
-	
-	public int getInternalId() {
-		return internalId;
-	}
+    // 기본 생성자
+    public MentoringDTO() {}
 
-	public String getFileName() {
-		return fileName;
-	}
+    // Getter & Setter
+    public long getMentoringNumber() {
+        return mentoringNumber;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setMentoringNumber(long mentoringNumber) {
+        this.mentoringNumber = mentoringNumber;
+    }
 
-	public void setInternalId(int internalId) {
-		this.internalId = internalId;
-	}
+    public long getMentorNumber() {
+        return mentorNumber;
+    }
 
-	public int getMentorNumber() {
-		return mentorNumber;
-	}
+    public void setMentorNumber(long mentorNumber) {
+        this.mentorNumber = mentorNumber;
+    }
 
-	public void setMentorNumber(int mentorNumber) {
-		this.mentorNumber = mentorNumber;
-	}
+    public int getSubjectNumber() {
+        return subjectNumber;
+    }
 
-	public int getSubjectNumber() {
-		return subjectNumber;
-	}
+    public void setSubjectNumber(int subjectNumber) {
+        this.subjectNumber = subjectNumber;
+    }
 
-	public void setSubjectNumber(int subjectNumber) {
-		this.subjectNumber = subjectNumber;
-	}
+    public String getMentoringTitle() {
+        return mentoringTitle;
+    }
 
-	public String getMentoringTitle() {
-		return mentoringTitle;
-	}
+    public void setMentoringTitle(String mentoringTitle) {
+        this.mentoringTitle = mentoringTitle;
+    }
 
-	public void setMentoringTitle(String mentoringTitle) {
-		this.mentoringTitle = mentoringTitle;
-	}
+    public String getMentoringGoal() {
+        return mentoringGoal;
+    }
 
-	public String getMentoringGoal() {
-		return mentoringGoal;
-	}
+    public void setMentoringGoal(String mentoringGoal) {
+        this.mentoringGoal = mentoringGoal;
+    }
 
-	public void setMentoringGoal(String mentoringGoal) {
-		this.mentoringGoal = mentoringGoal;
-	}
+    public String getMentoringDetail() {
+        return mentoringDetail;
+    }
 
-	public String getMentoringDetail() {
-		return mentoringDetail;
-	}
+    public void setMentoringDetail(String mentoringDetail) {
+        this.mentoringDetail = mentoringDetail;
+    }
 
-	public void setMentoringDetail(String mentoringDetail) {
-		this.mentoringDetail = mentoringDetail;
-	}
+    public Long getFileNumber() {
+        return fileNumber;
+    }
 
-	public int getFileNumber() {
-		return fileNumber;
-	}
+    public void setFileNumber(Long fileNumber) {
+        this.fileNumber = fileNumber;
+    }
 
-	public void setFileNumber(int fileNumber) {
-		this.fileNumber = fileNumber;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public String getCreateAt() {
-		return createAt;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
-	}
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
-	public String getUpdateAt() {
-		return updateAt;
-	}
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setUpdateAt(String updateAt) {
-		this.updateAt = updateAt;
-	}
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "MentoringDTO [mentoringNumber=" + mentoringNumber + ", mentoringTitle=" + mentoringTitle + "]";
+    }
 }
