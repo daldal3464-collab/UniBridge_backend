@@ -16,8 +16,8 @@
 
     <!-- 탭 -->
     <div class="board-tabs">
-      <a id="tab-mentee" href="#" class="board-tab">멘티 게시판</a>
-      <a id="tab-mentor" href="#" class="board-tab">멘토 게시판</a>
+      <a id="tab-mentee" href="${pageContext.request.contextPath}/app/admin/adminBoard/menteeBoard/menteeBoardList.jsp" class="board-tab">멘티 게시판</a>
+      <a id="tab-mentor" href="${pageContext.request.contextPath}/app/admin/adminBoard/mentorBoard/mentorBoardList.jsp" class="board-tab">멘토 게시판</a>
     </div>
 
     <!-- 필터 행 -->
@@ -53,7 +53,7 @@
     .then(html => {
       document.getElementById("header-wrap").innerHTML = html;
       const s = document.createElement("script");
-      s.src = "${pageContext.request.contextPath}/header/adminHeader.js";
+      s.src = "${pageContext.request.contextPath}/assets/js/header/adminHeader.js";
       document.body.appendChild(s);
     });
 </script>

@@ -22,9 +22,42 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ========================
      목록 렌더
   ======================== */
-  let currentPage = 1;
-  let dateFrom = "";
-  let dateTo = "";
+
+  let dateFrom = document.getElementById(dateFrom).value;		//필터 시작일
+  let dateTo = document.getElementById(dateTo).value;			//필터 마지막일
+  
+  
+  const btnSearch = document.getElementById("btnSearch");
+  btnSearch.addEventListener("click", () => {
+        const dateFrom = document.getElementById("dateFrom").value;
+        const dateTo = document.getElementById("dateTo").value;
+        if (dateFrom > dateTo) {
+          alert("시작 날짜가 종료 날짜보다 클 수 없습니다.");
+          return;
+        }
+		
+		fetch("/app/admin/menteeBoardList.admin?dateFrom=" + dateFrom + ",dateTo=" + dateTo)
+		.then(response => response.json())
+		.then(data => console.log(data))
+		.catch(error => console.error(error));
+
+      });
+    }
+
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const boardTableBody = document.getElementById("boardTableBody");
 
   function renderTable(page) {
@@ -121,21 +154,4 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ========================
      조회 버튼
   ======================== */
-  const btnSearch = document.getElementById("btnSearch");
-  if (btnSearch) {
-    btnSearch.addEventListener("click", () => {
-      const from = document.getElementById("dateFrom")?.value;
-      const to = document.getElementById("dateTo")?.value;
-      if (from && to && from > to) {
-        alert("시작 날짜가 종료 날짜보다 클 수 없습니다.");
-        return;
-      }
-      dateFrom = from || "";
-      dateTo = to || "";
-      currentPage = 1;
-      renderTable(currentPage);
-      renderPagination();
-    });
-  }
 
-});

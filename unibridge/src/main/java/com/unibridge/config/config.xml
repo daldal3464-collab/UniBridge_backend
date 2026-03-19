@@ -30,6 +30,7 @@
       <typeAlias type="com.unibridge.app.mypage.mentoring.dto.MentoringDTO" alias="MentoringDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.admin.dto.AdminDTO" alias="AdminDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.admin.dto.AdMainDTO" alias="AdMainDTO"></typeAlias>
+      <typeAlias type="com.unibridge.app.admin.dto.AdMenteeBoardListDTO" alias="AdMenteeBoardListDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.learningReport.dto.LearningReportDTO" alias="LearningReportDTO"></typeAlias>
    </typeAliases>
 
