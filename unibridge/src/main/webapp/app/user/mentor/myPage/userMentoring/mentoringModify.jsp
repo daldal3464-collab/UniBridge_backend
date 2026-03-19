@@ -54,6 +54,8 @@
 					<form
 						action="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringModifyOk.my"
 						method="post" enctype="multipart/form-data">
+						<input type="hidden" name="mentoringNumber"
+							value="${mentoring.mentoringNumber}">
 
 						<%-- [수정] DTO 필드명에 맞춰 internalId 사용 --%>
 						<input type="hidden" name="mentoringNumber"
@@ -107,11 +109,10 @@
 
 						<div id="buttons">
 							<button type="submit">수정 완료</button>
-							<button type="button" style="color: #475569;"
-								onclick="history.back()">취소</button>
+							<button type="button" onclick="history.back()">취소</button>
+							<%-- 2. 삭제 함수 호출 부분 수정 --%>
 							<button type="button" id="delBtn"
-								style="border-color: #ff4d4d; color: #ff4d4d;"
-								onclick="deleteMentoring(${mentoring.internalId})">삭제하기</button>
+								onclick="deleteMentoring(${mentoring.mentoringNumber})">삭제하기</button>
 						</div>
 					</form>
 				</div>
@@ -123,7 +124,7 @@
 	<script>
     function deleteMentoring(internalId) {
         if(confirm("정말로 이 멘토링을 삭제하시겠습니까?")) {
-            location.href = "${pageContext.request.contextPath}/mvc/auth/mentor/mentoringDeleteOk.my?mentoringNumber=" + internalId;
+            location.href = "${pageContext.request.contextPath}/mvc/auth/mentor/mentoringDeleteOk.my?mentoringNumber=" + mentoringNumber;
         }
     }
 </script>

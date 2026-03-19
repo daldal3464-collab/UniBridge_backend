@@ -25,25 +25,30 @@ public class MentorDetailOkController implements Execute {
 	    Result result = new Result();
 
 	    // 2. 로그인 여부 검사
-//	    if (loginNum == null) {
-//	        // 로그인이 안 되어 있다면 로그인 페이지로 강제 이동
-//	        // (contextPath는 프로젝트 기본 경로를 자동으로 잡아줍니다)
-//	        result.setPath(request.getContextPath() + "/member/login.me"); 
-//	        result.setRedirect(true); // 주소창을 로그인 페이지로 바꾸기 위해 true 설정
-//	        return result; // 이후 로직(DB 조회 등)을 실행하지 않고 바로 종료
-//	    }
-	    if (session.getAttribute("memberNumber") == null) {
-            session.setAttribute("memberNumber", 22L); // DB에 존재하는 임시 멘티 번호
-            session.setAttribute("memberType", "MENTEE");
-            session.setAttribute("memberName", "임시멘티");
-        }
+	    if (loginNum == null) {
+	        // 로그인이 안 되어 있다면 로그인 페이지로 강제 이동
+	        // (contextPath는 프로젝트 기본 경로를 자동으로 잡아줍니다)
+	    	result.setPath(request.getContextPath() + "/signin.mem"); 
+	        result.setRedirect(true); // 주소창을 로그인 페이지로 바꾸기 위해 true 설정
+	        return result; // 이후 로직(DB 조회 등)을 실행하지 않고 바로 종료
+	    }
+//	    if (session.getAttribute("memberNumber") == null) {
+//            session.setAttribute("memberNumber", 22L); // DB에 존재하는 임시 멘티 번호
+//            session.setAttribute("memberType", "MENTEE");
+//            session.setAttribute("memberName", "임시멘티");
+//        }
 
 	    // --- 여기서부터는 로그인된 사용자만 실행됨 ---
 	    
 	    // 3. 파라미터 받기 및 상세 정보 조회
 	    String memberNumberStr = request.getParameter("memberNumber");
+        if (memberNumberStr == null) {
+            result.setPath("/mentor/mentorSearchOk.sch"); // 번호 없으면 목록으로
+            result.setRedirect(true);
+            return result;
+        }
+        
 	    long memberNumber = Long.parseLong(memberNumberStr);
-	    
 	    MentorSearchDAO dao = new MentorSearchDAO();
 	    MentorSearchDTO mentor = dao.selectMentorDetail(memberNumber);
 	    

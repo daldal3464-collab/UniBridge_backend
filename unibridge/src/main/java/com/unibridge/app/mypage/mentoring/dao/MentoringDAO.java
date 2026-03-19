@@ -1,6 +1,7 @@
 package com.unibridge.app.mypage.mentoring.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import java.util.List;
 import com.unibridge.app.mypage.mentoring.dto.MentoringDTO;
 import com.unibridge.config.MyBatisConfig;
 
@@ -21,23 +22,24 @@ public class MentoringDAO {
 	public void insert(MentoringDTO mentoringDTO) {
 	    try {
 	        sqlSession.insert("mentoring.insert", mentoringDTO);
+	        System.out.println("[DAO] insert 성공 - 생성된 번호: " + mentoringDTO.getMentoringNumber());
 	    } catch (Exception e) {
 	        System.out.println("[DAO] insert 중 오류 발생!");
 	        e.printStackTrace();
-	        throw e; // ★ 중요: 에러를 위로 던져야 컨트롤러가 멈춥니다!
+	        throw e; 
 	    }
 	}
 	
-	// 멘토링 상세 조회
-	public MentoringDTO select(int interanlId) {
-		System.out.println("[DAO] select 호출됨 - ID: " + interanlId);
+	// 멘토링 상세 조회 (매개변수명 및 타입 변경: int -> long)
+	public MentoringDTO select(long mentoringNumber) {
+		System.out.println("[DAO] select 호출됨 - 번호: " + mentoringNumber);
 		MentoringDTO dto = null;
 		try {
-			dto = sqlSession.selectOne("mentoring.select", interanlId);
+			dto = sqlSession.selectOne("mentoring.select", mentoringNumber);
 			if(dto != null) {
 				System.out.println("[DAO] select 성공 - 조회된 제목: " + dto.getMentoringTitle());
 			} else {
-				System.out.println("[DAO] select 결과 없음 - 해당 ID: " + interanlId);
+				System.out.println("[DAO] select 결과 없음 - 해당 번호: " + mentoringNumber);
 			}
 		} catch (Exception e) {
 			System.out.println("[DAO] select 중 오류 발생!");
@@ -46,9 +48,9 @@ public class MentoringDAO {
 		return dto;
 	}
 	
-	// 멘토링 수정
+	// 멘토링 수정 (DTO의 필드명 변경에 따른 호출 수정)
 	public void update(MentoringDTO mentoringDTO) {
-		System.out.println("[DAO] update 호출됨 - 수정 대상 ID: " + mentoringDTO.getInternalId());
+		System.out.println("[DAO] update 호출됨 - 수정 대상 번호: " + mentoringDTO.getMentoringNumber());
 		try {
 			int result = sqlSession.update("mentoring.update", mentoringDTO);
 			System.out.println("[DAO] update 성공 여부 (영향받은 행 수): " + result);
@@ -58,11 +60,11 @@ public class MentoringDAO {
 		}
 	}
 	
-	// 멘토링 삭제
-	public void delete(int interanlId) {
-		System.out.println("[DAO] delete 호출됨 - 삭제 대상 ID: " + interanlId);
+	// 멘토링 삭제 (매개변수명 및 타입 변경)
+	public void delete(long mentoringNumber) {
+		System.out.println("[DAO] delete 호출됨 - 삭제 대상 번호: " + mentoringNumber);
 		try {
-			int result = sqlSession.delete("mentoring.delete", interanlId);
+			int result = sqlSession.delete("mentoring.delete", mentoringNumber);
 			System.out.println("[DAO] delete 성공 여부 (영향받은 행 수): " + result);
 		} catch (Exception e) {
 			System.out.println("[DAO] delete 중 오류 발생!");
@@ -70,12 +72,11 @@ public class MentoringDAO {
 		}
 	}
 	
-	// 멘토링 중복 체크
-	public int checkAlreadyExists(int mentorNumber) {
+	// 멘토링 중복 체크 (파라미터 타입 일관성 유지: long)
+	public int checkAlreadyExists(long mentorNumber) {
 	    System.out.println("[DAO] 중복 체크 시작 - 멘토 번호: " + mentorNumber);
 	    int count = 0;
 	    try {
-	        // mentoringMapper.xml에 작성할 select id="checkExists"를 호출합니다.
 	        count = sqlSession.selectOne("mentoring.checkExists", mentorNumber);
 	        System.out.println("[DAO] 중복 체크 결과 (개수): " + count);
 	    } catch (Exception e) {
@@ -84,6 +85,4 @@ public class MentoringDAO {
 	    }
 	    return count;
 	}
-	
-	
 }
