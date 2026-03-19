@@ -1,61 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="admin">
 
 	<!-- 관리자 로그인 -->
-	<select id="adminlogin" parameterType="AdminDTO" resultType="int">
-		SELECT admin_number
-		FROM UB_ADMIN
+	<select id="adlogin" parameterType="AdminDTO" resultType="AdminDTO">
+		SELECT * FROM UB_ADMIN
 		WHERE admin_id = #{adminId} and admin_pw = #{adminPw}
 	</select>
 	
 	<!-- 메인페이지  -->
 	<select id="membertotal" resultType="int">
-		SELECT count(*) FROM UB_MEMBER
+		SELECT 
 	</select>
-	
-	<select id="mentortotal" resultType="int">
-		SELECT count(*) FROM UB_MEMBER WHERE MEMBER_TYPE = 'MENTOR'
-	</select>
-	
-	<select id="menteetotal" resultType="int">
-		SELECT count(*) FROM UB_MEMBER WHERE MEMBER_TYPE = 'MENTEE'
-	</select>
-	
-	<select id="matchingtotal" resultType="int">
-		SELECT count(*) FROM UB_MATCHING
-	</select>
-	
-	
-	<select id="recentboard" resultType="AdMainDTO">
-	<![CDATA[
-		SELECT * 
-		FROM (
-		SELECT  umb.board_title, umb.board_date
-		FROM UB_MENTEE_BOARD umb
-		UNION ALL 
-		SELECT  umb.board_title, umb.board_date
-		FROM UB_MENTOR_BOARD umb
-		ORDER BY board_date)
-		WHERE ROWNUM <= 5
-	]]>
-	</select>
-
-	
-	
-	<select id="recentMember" resultType="AdMainDTO">
-	<![CDATA[
-		SELECT * 
-		FROM (
-		SELECT MEMBER_NAME, MEMBER_type, member_date 
-		FROM UB_MEMBER
-		ORDER BY member_date)
-		WHERE ROWNUM <= 5
-	]]>
-	</select>
-	
-	
-	
 	
 </mapper>

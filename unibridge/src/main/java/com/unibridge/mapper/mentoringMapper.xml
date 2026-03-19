@@ -14,11 +14,9 @@
 		m.FILE_NUMBER as fileNumber,
 		f.FILE_NAME as fileName
 		FROM UB_MENTORING m
-		LEFT JOIN UB_FILE f ON
-		m.FILE_NUMBER =
+		LEFT JOIN UB_FILE f ON m.FILE_NUMBER =
 		f.FILE_NUMBER
-		WHERE m.MENTORING_NUMBER =
-		#{mentoringNumber}
+		WHERE m.MENTORING_NUMBER = #{mentoringNumber}
 	</select>
 
 	<insert id="insert" parameterType="MentoringDTO">
@@ -56,11 +54,9 @@
 		SUBJECT_NUMBER = #{subjectNumber},
 		MENTORING_TITLE = #{mentoringTitle},
 		MENTORING_GOAL = #{mentoringGoal},
-		MENTORING_DETAIL =
-		#{mentoringDetail},
+		MENTORING_DETAIL = #{mentoringDetail},
 		UPDATED_AT = CURRENT_TIMESTAMP
-		WHERE
-		MENTORING_NUMBER = #{mentoringNumber}
+		WHERE MENTORING_NUMBER = #{mentoringNumber}
 	</update>
 
 	<delete id="delete" parameterType="long">
@@ -68,13 +64,6 @@
 		WHERE
 		MENTORING_NUMBER = #{mentoringNumber}
 	</delete>
-
-	<select id="getMentoringNumberByMentor" parameterType="long"
-		resultType="long">
-		SELECT MENTORING_NUMBER
-		FROM UB_MENTORING
-		WHERE MENTOR_NUMBER = #{mentorNumber}
-	</select>
 
 	<select id="checkExists" parameterType="long" resultType="int">
 		SELECT

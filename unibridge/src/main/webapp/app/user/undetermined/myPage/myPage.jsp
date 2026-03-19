@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +20,9 @@
         <aside>
             <div class="myPageTitle">마이페이지</div>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/auth/undecided/myPage.my" class="active">계정 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/auth/undecided/survey.my" >설문 조사</a></li>
-                <li><a href="${pageContext.request.contextPath}/auth/undecided/delete.my">회원 탈퇴</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/myPage.my" class="active">계정 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/survey.my" >설문 조사</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/delete.my">회원 탈퇴</a></li>
             </ul>
         </aside>
         <main>
@@ -34,29 +35,32 @@
                 <div class="userProfile">
                     <div class="userTextGroup">
                         <label for="">아이디</label>
-                        <div class="userText">hongdong11</div>
+                        <div class="userText">${member.MEMBER_ID}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">이름</label>
-                        <div class="userText">홍길동</div>
+                        <div class="userText">${member.MEMBER_NAME}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">닉네임</label>
-                        <div class="userText">홍길동</div>
+                        <div class="userText">${member.MEMBER_NICKNAME}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">성별</label>
-                        <div class="userText">남성</div>
+                        <div class="userText">
+                        	${member.MEMBER_GENDER == 'M' ? '남성' : 
+                  			member.MEMBER_GENDER == 'W' ? '여성' : '선택안함'}
+                        </div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">전화번호</label>
-                        <div class="userText">010-1234-5678</div>
+                        <div class="userText">${member.MEMBER_PHONE}</div>
                     </div>
                 </div>
             </div>
-            <form action="${pageContext.request.contextPath}/app/user/undetermined/myPage/userManage/userModifyCheck.jsp">
-                <button class="userModifyBtn">수정</button>
-            </form>
+            <form method="post" action="${pageContext.request.contextPath}/mvc/auth/undecided/verify.my">
+			    <button type="submit" class="userModifyBtn">수정</button>
+			</form>
         </main>
 
     </div>

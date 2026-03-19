@@ -35,6 +35,10 @@ public class MypageFrontController extends HttpServlet {
 
 		String requestURI = request.getRequestURI();
 		String target = extractUserRole(requestURI);
+		
+		System.out.println("기본 URI: " + requestURI); 
+		System.out.println("추출된 Target: " + target);
+		
 		Result result = null;
 
 		switch (target) {

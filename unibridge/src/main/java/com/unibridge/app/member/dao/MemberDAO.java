@@ -1,5 +1,7 @@
 package com.unibridge.app.member.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.unibridge.app.member.dto.MemberDTO;
@@ -42,5 +44,18 @@ public class MemberDAO {
     
     public void deleteMember(int memberNumber) {
         sqlSession.delete("member.deleteMember", memberNumber);
+    }
+    
+    public Map<String, Object> selectMember(int memberNumber) {
+        SqlSession sqlSession = MyBatisConfig.getSqlSessionFactory().openSession();
+        // DB에서 한 행을 Map으로 가져오기
+        Map<String, Object> member = sqlSession.selectOne("member.selectMap", memberNumber);
+        sqlSession.close();
+        return member;
+    }
+    
+    public String getMemberTypeByNum(int memberNumber) {
+        // MyBatis 실행 결과인 "MENTOR", "MENTEE", "NODECIDED" 문자열을 바로 반환
+        return sqlSession.selectOne("member.getMemberTypeByNum", memberNumber);
     }
 }

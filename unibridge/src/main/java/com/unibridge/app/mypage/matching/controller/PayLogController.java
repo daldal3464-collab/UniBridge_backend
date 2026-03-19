@@ -5,9 +5,11 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.unibridge.app.Execute;
 import com.unibridge.app.Result;
+import com.unibridge.app.member.dto.MemberDTO;
 import com.unibridge.app.pay.dao.PaymentDAO;
 import com.unibridge.app.pay.dto.PaymentDTO;
 
@@ -34,21 +36,12 @@ public class PayLogController implements Execute{
 
 	private void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-	    Long memberNumber = (Long) request.getSession().getAttribute("memberNumber");
-	    //임시 값 결제 내역 O
-//	    memberNumber = 39L;
-	    
-	    //임시 값 결제 내역 X
-//	    memberNumber = 1L;
-
-	    if (memberNumber == null) {
-	        outResult.setPath("/app/user/signin/signin.jsp");
-	        outResult.setRedirect(true);
-	        return;
-	    }
+		HttpSession session = request.getSession();
+		MemberDTO memberNumber = (MemberDTO) session.getAttribute("loginUser");
+	    System.out.println("MenteeMange컨트롤러 : " + memberNumber.getMemberNumber());
 
 	    PaymentDAO dao = new PaymentDAO();
-	    PaymentDTO payLog = dao.selectLatestPaymentByMember(memberNumber);
+	    PaymentDTO payLog = dao.selectLatestPaymentByMember(memberNumber.getMemberNumber());
 
 	    // 핵심 분기
 	    if (payLog == null) {

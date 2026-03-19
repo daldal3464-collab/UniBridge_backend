@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +25,8 @@
                 <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my" class="active">계정 관리</a></li>
                 <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/survey.my">설문 조사</a></li>
                 <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my">매칭 정보</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringMain.my">멘토링</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/app/delete.my">회원 탈퇴</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringCreate.my">멘토링</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/delete.my">회원 탈퇴</a></li>
             </ul>
         </aside>
 
@@ -40,34 +41,34 @@
                 <div class="userProfile">
                     <div class="userTextGroup">
                         <label for="">아이디</label>
-                        <div class="userText">${sessionScope.memberId}</div>
+                        <div class="userText">${member.MEMBER_ID}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">이름</label>
-                        <div class="userText">${sessionScope.memberName}</div>
+                        <div class="userText">${member.MEMBER_NAME}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">닉네임</label>
-                        <div class="userText">${sessionScope.memberNickname}</div>
+                        <div class="userText">${member.MEMBER_NICKNAME}</div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">성별</label>
-                        <div class="userText">${sessionScope.memberGender}</div>
+                        <div class="userText">
+                        	${member.MEMBER_GENDER == 'M' ? '남성' : 
+                  			member.MEMBER_GENDER == 'W' ? '여성' : '선택안함'}
+                        </div>
                     </div>
                     <div class="userTextGroup">
                         <label for="">전화번호</label>
-                        <div class="userText">${sessionScope.memberPhone}</div>
+                        <div class="userText">${member.MEMBER_PHONE}</div>
                     </div>
                 </div>
             </div>
-
-            <form action="${pageContext.request.contextPath}/app/user/mentor/myPage/userManage/userModifyCheck.jsp">
-                <button class="userModifyBtn">수정</button>
+            <form method="post" action="${pageContext.request.contextPath}/mvc/auth/mentor/verify.my">
+                <button type="submit" class="userModifyBtn">수정</button>
             </form>
         </main>
 
     </div>
-
-
 </body>
 </html>

@@ -11,10 +11,12 @@ import com.unibridge.app.Execute;
 import com.unibridge.app.Result;
 import com.unibridge.app.member.dao.MemberDAO;
 import com.unibridge.app.member.dto.MemberDTO;
+import com.unibridge.app.mypage.surveyMentee.controller.SurveyMenteeController;
+import com.unibridge.app.mypage.surveyMentor.controller.SurveyMentorController;
 
-public class DeleteController implements Execute {
+public class MentorDeleteController implements Execute{
 
-    private Result outResult = new Result();
+	private Result outResult = new Result();
 
     @Override
     public Result execute(HttpServletRequest request, HttpServletResponse response)
@@ -34,46 +36,26 @@ public class DeleteController implements Execute {
         return outResult;
     }
 
-    // 탈퇴 페이지 이동
+    // 회원탈퇴 페이지 이동
     private void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-    	HttpSession session = request.getSession();
-        String role = (String) session.getAttribute("role");
-
-        String path = "/app/user/undetermined/myPage/userDelete/userDelete.jsp"; // 기본값
-
-        if ("mentor".equals(role)) {
-            path = "/app/user/mentor/myPage/userDelete/userDelete.jsp";
-        } else if ("mentee".equals(role)) {
-            path = "/app/user/mentee/myPage/userDelete/userDelete.jsp";
-        }
-
-        System.out.println("현재 사용자 유형: " + role);
-        System.out.println("이동 경로: " + path);
-
-        outResult.setPath(path);
+    	//멘티 회원 탈퇴 이동
+        outResult.setPath("/app/user/mentor/myPage/userDelete/userDelete.jsp");
         outResult.setRedirect(false);
     }
 
-    // 실제 탈퇴 처리
-    private void doPost(HttpServletRequest request, HttpServletResponse response) {
+    // 탈퇴 처리
+    private void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        System.out.println("[DeleteController] POST - 회원 탈퇴 진행");
+    	System.out.println("[DeleteController] POST - 회원 탈퇴 진행");
 
         HttpSession session = request.getSession();
         Object memberNumObj = session.getAttribute("memberNumber");
 
-        if (memberNumObj == null) {
-            System.out.println("[ERROR] 로그인 안됨");
-
-            outResult.setRedirect(true);
-            outResult.setPath(request.getContextPath() + "/member/login.me");
-            return;
-        }
-
         int memberNumber = (int) memberNumObj;
 
-        // 🔥 DTO에 값 세팅
+        // DTO에 값 세팅
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setMemberId(request.getParameter("userId"));
         memberDTO.setMemberPw(request.getParameter("userPw"));
@@ -92,7 +74,7 @@ public class DeleteController implements Execute {
 
             outResult.setRedirect(false);
             request.setAttribute("errorMsg", "정보가 일치하지 않습니다.");
-            outResult.setPath("/app/user/undetermined/myPage/userDelete/userDelete.jsp");
+            outResult.setPath("/app/user/mentor/myPage/userDelete/userDelete.jsp");
             return;
         }
 
@@ -104,6 +86,7 @@ public class DeleteController implements Execute {
 
         // 메인 이동
         outResult.setRedirect(true);
-        outResult.setPath(request.getContextPath() + "/main.main");
+        outResult.setPath(request.getContextPath() + "/index.main");
     }
+
 }
