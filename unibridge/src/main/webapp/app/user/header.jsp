@@ -93,7 +93,7 @@
 						</c:otherwise>
 					</c:choose>
 					<div class="headerDivider"></div>
-					<a href="${pageContext.request.contextPath}/logout.mem"
+					<a href="${pageContext.request.contextPath}/signout.mem"
 						class="headerBtnText logout">로그아웃</a>
 				</div>
 			</c:otherwise>
