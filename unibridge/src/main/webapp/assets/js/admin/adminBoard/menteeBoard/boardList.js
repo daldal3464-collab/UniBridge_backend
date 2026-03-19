@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabMentor = document.getElementById("tab-mentor");
 
   if (tabMentee) {
-    tabMentee.href = "../menteeBoard/menteeBoardList.html";
+    tabMentee.href = "../menteeBoard/menteeBoardList.admin";
     if (!isMentor) tabMentee.classList.add("is-active");
   }
   if (tabMentor) {
-    tabMentor.href = "../mentorBoard/mentorBoardList.html";
+    tabMentor.href = "../mentorBoard/mentorBoardList.admin";
     if (isMentor) tabMentor.classList.add("is-active");
   }
 
@@ -89,10 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ========================
+/*   ========================
      페이지네이션
-  ======================== */
-  const pagination = document.getElementById("pagination");
+  ======================== 
+*/  const pagination = document.getElementById("pagination");
 
   function renderPagination() {
     if (!pagination) return;
@@ -141,17 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTable(currentPage);
   renderPagination();
 
-  /* ========================
+/*   ========================
      작성 버튼
-  ======================== */
-  const btnWrite = document.getElementById("btnWrite");
+  ======================== 
+*/  const btnWrite = document.getElementById("btnWrite");
   if (btnWrite) {
     btnWrite.addEventListener("click", () => {
       location.href = `${boardType}BoardWrite.html`;
     });
   }
 
-  /* ========================
+/*   ========================
      조회 버튼
-  ======================== */
-
+  ======================== 
+*/

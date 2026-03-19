@@ -58,6 +58,24 @@
 		select count(*) from UB_MENTEE_BOARD
 	</select>
 	
+	<select id="selectAll" resultType = "AdMenteeBoardListDTO">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT ROWNUM AS rnum, subquery.*
+				FROM (
+					SELECT umb.menteeboard_number, board_title, board_click, board_date, 
+						CASE
+							WHEN umb.admin_number IS NOT NULL THEN ua.admin_Nickname
+							WHEN umb.MEMBER_number IS NOT NULL THEN um.MEMBER_nickname
+						END AS "write_nickname"
+					FROM UB_MENTEE_BOARD umb
+					LEFT JOIN UB_MEMBER um ON um.MEMBER_NUMBER = umb.MEMBER_NUMBER 
+					LEFT JOIN UB_ADMIN UA ON umb.admin_number = ua.admin_number
+				) subquery
+			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
+		]]>
+	</select>
+	
 	<select id="selectFilter" resultType="AdMenteeBoardListDTO">
 		<![CDATA[
 			SELECT * FROM (
@@ -75,7 +93,7 @@
 					AND TO_DATE(#{dateTo}, 'YYYY-MM-DD')
 					ORDER BY umb.MENTEEBOARD_NUMBER desc
 				) subquery
-			)WHERE rnum BETWEEN #{startRow} AND #{endRow};
+			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
 		]]>
 	</select>
 	
