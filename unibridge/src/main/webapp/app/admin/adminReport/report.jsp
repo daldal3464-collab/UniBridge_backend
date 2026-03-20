@@ -10,12 +10,17 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin/adminReport/report.css">
 
   <script src="${pageContext.request.contextPath}/assets/js/admin/adminReport/report.js" defer></script>
+  
+  <script>window.contextPath = "${pageContext.request.contextPath}";</script>
   <title>Document</title>
 </head>
 <body>
   <div id="root">
     <div class="root-container">
-      <div id="header-wrap"></div>
+      <div id="header-wrap">
+      	<jsp:include page="/header/adminHeader.jsp"/>
+      </div>
+      
       <main class="main-container">
         <div class="title-container">
           <div class="title">학습 보고서</div>
@@ -56,100 +61,6 @@
             <div class="report-container">
               <div class="report-container__inner">
                 <ul class="reports-per-week">
-
-                  <li class="report-content">
-                    <div class="title">3월 3일(월)</div>
-                    <div class="vertical-line"></div>
-                    <ul class="reports">
-                      <li class="report-item">
-                        <div class="mentor-mentee">
-                          <div class="user-info mentor">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘토</span>
-                              <span class="mentor-name">멘토 이름 1</span>
-                            </div>
-                          </div>
-                          <div class="user-info mentee">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘티</span>
-                              <span class="mentee-name">멘티 이름 1</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="detail-button">상세</div>
-                      </li>
-
-                      <li class="report-item">
-                        <div class="mentor-mentee">
-                          <div class="user-info mentor">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘토</span>
-                              <span class="mentor-name">멘토 이름 2</span>
-                            </div>
-                          </div>
-                          <div class="user-info mentee">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘티</span>
-                              <span class="mentee-name">멘티 이름 2</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="detail-button">상세</div>
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li class="report-content">
-                    <div class="report-content__inner">
-                      <div class="title">3월 2일(일)</div>
-                      <div class="vertical-line"></div>
-                      <ul class="reports">
-                      <li class="report-item">
-                        <div class="mentor-mentee">
-                          <div class="user-info mentor">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘토</span>
-                              <span class="mentor-name">멘토 이름 1</span>
-                            </div>
-                          </div>
-                          <div class="user-info mentee">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘티</span>
-                              <span class="mentee-name">멘티 이름 1</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="detail-button">상세</div>
-                      </li>
-
-                      <li class="report-item">
-                        <div class="mentor-mentee">
-                          <div class="user-info mentor">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘토</span>
-                              <span class="mentor-name">멘토 이름 2</span>
-                            </div>
-                          </div>
-                          <div class="user-info mentee">
-                            <div class="user-icon"><img src ="${pageContext.request.contextPath}/assets/img/admin/adminNoticeImg/userIcon.png"></div>
-                            <div class="user-desc">
-                              <span>멘티</span>
-                              <span class="mentee-name">멘티 이름 2</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="detail-button">상세</div>
-                      </li>
-                      </ul>
-                    </div>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -158,15 +69,5 @@
       </main>
     </div>
   </div>
-  <script>
-    fetch("${pageContext.request.contextPath}/header/adminHeader.jsp")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("header-wrap").innerHTML = html;
-        const s = document.createElement("script");
-        s.src = "${pageContext.request.contextPath}/header/adminHeader.js";
-        document.body.appendChild(s);
-      });
-  </script>
 </body>
 </html>

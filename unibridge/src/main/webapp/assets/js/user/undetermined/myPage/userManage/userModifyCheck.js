@@ -1,91 +1,81 @@
-/**
- * 
- */
+
 document.addEventListener('DOMContentLoaded', () => {
-    const modifyForm = document.getElementById('goUserModify');
     const inputs = document.querySelectorAll('.userInput');
+    const sendBtn = document.querySelector('#sendSmsBtn');
+    const verifyBtn = document.querySelector('#verifySmsBtn'); // ID 선택 권장
+    const modifyForm = document.getElementById('goUserModify');
     
-    // 버튼 요소 가져오기
-    const sendAuthBtn = document.querySelectorAll('.duplication')[0]; // 첫 번째 '인증 번호 전송' 버튼
-    const confirmAuthBtn = document.querySelectorAll('.duplication')[1]; // 두 번째 '인증 확인' 버튼
-    
-    // 상태 변수 및 임의 값 설정
     let isAuthVerified = false; 
-    const CORRECT_PW = "1234";    
-    const CORRECT_AUTH = "12345"; 
 
-    // [1] 인증 번호 전송 버튼 클릭 이벤트
-    sendAuthBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // 폼 제출 방지
+    // 1. 인증번호 전송 (010+8자리 숫자 검증 포함)
+    sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const phone = inputs[1].value.trim();
 
-        const phoneInput = inputs[1].value.trim();
-        if (!phoneInput) {
-            alert('전화번호를 먼저 입력해주세요.');
+        // 하이픈 없이 숫자 11자리만 허용하는 정규표현식
+        const phoneRegex = /^010\d{8}$/;
+
+        if (!phone) {
+            alert("전화번호를 입력해주세요.");
+            return;
+        }
+
+        if (!phoneRegex.test(phone)) {
+            alert("하이픈(-) 없이 숫자 11자리만 입력해주세요.\n(예: 01012345678)");
             inputs[1].focus();
             return;
         }
 
-        // 전송 시뮬레이션
-        alert('인증번호가 발송되었습니다.');
-        
-        // 버튼 비활성화 (선택 사항: 다시 전송 못 하게 하거나 디자인 변경)
-        sendAuthBtn.disabled = true;
-        sendAuthBtn.innerText = "발송 완료";
-        sendAuthBtn.style.backgroundColor = "#ccc";
-        sendAuthBtn.style.cursor = "default";
+		fetch('/unibridge/mvc/auth/mentee/verifyAction.my?mode=send', {
+		    method: 'POST',
+		    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		    body: `phoneNumber=${encodeURIComponent(phone)}`
+		})
+        .then(res => res.text())
+        .then(data => {
+            if (data === "success") alert("인증번호가 발송되었습니다.");
+            else alert("발송 실패. 번호를 확인해주세요.");
+        });
     });
 
-    // [2] 인증 확인 버튼 클릭 이벤트
-    confirmAuthBtn.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        
-        const enteredAuth = inputs[2].value.trim();
-
-        if (enteredAuth === CORRECT_AUTH) {
-            alert('인증에 성공하였습니다.');
-            isAuthVerified = true;
-            
-            // 인증번호 입력창 및 버튼 비활성화
-            inputs[2].readOnly = true; 
-            confirmAuthBtn.disabled = true;
-            confirmAuthBtn.innerText = "확인 완료";
-            confirmAuthBtn.style.backgroundColor = "#ccc";
-            confirmAuthBtn.style.cursor = "default";
-        } else {
-            alert('인증번호가 일치하지 않습니다. (임의 번호: 12345)');
-            isAuthVerified = false;
-        }
-    });
-
-    // [3] 최종 정보 수정 버튼 클릭 이벤트
-    modifyForm.addEventListener('submit', (e) => {
+    // 2. 인증번호 확인 (JSON POST 방식)
+    verifyBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        const code = inputs[2].value.trim();
 
-        const enteredPw = inputs[0].value.trim();
-        const enteredPhone = inputs[1].value.trim();
-
-        if (!enteredPw) {
-            alert('현재 비밀번호를 입력해주세요.');
-            inputs[0].focus();
+        if (!code) {
+            alert("인증번호를 입력해주세요.");
             return;
         }
 
-        // 비밀번호 체크
-        if (enteredPw !== CORRECT_PW) {
-            alert('현재 비밀번호가 일치하지 않습니다. (임의 번호: 1234)');
-            inputs[0].focus();
-            return;
-        }
+        // 경로를 verifyAction.my로 수정
+		fetch('/unibridge/mvc/auth/mentee/verifyAction.my?mode=check', {
+		    method: 'POST',
+		    headers: { 'Content-Type': 'application/json' },
+		    body: JSON.stringify({ authCode: code })
+		})
+        .then(res => res.text())
+		.then(data => {
+		    const verifyMsg = document.getElementById('verify-msg'); // 메시지 요소
+		    if(data.trim() === "verified") {
+		        alert("인증 성공!");
+		        isAuthVerified = true;
+		        verifyBtn.disabled = true;
+		        verifyMsg.style.display = 'none'; // 성공 시 메시지 숨김
+		    } else {
+		        // 이미지와 동일한 실패 문구 노출
+		        verifyMsg.innerText = "인증에 실패하였습니다.";
+		        verifyMsg.style.display = 'block';
+		    }
+		});
+    });
 
-        // 인증 완료 여부 체크
+    // 3. 최종 제출 (Submit)
+    modifyForm.addEventListener('submit', (e) => {
         if (!isAuthVerified) {
-            alert('휴대폰 인증 확인이 완료되지 않았습니다.');
-            return;
+            e.preventDefault();
+            alert('휴대폰 인증을 완료해주세요.');
         }
-
-        // 모든 조건 충족 시
-        if (confirm('회원 정보를 수정하시겠습니까?')) {
-            window.location.href = '/frontend/html/user/undetermined/myPage/userManage/userModify.html'; 
-        }
+        // JSP의 form action이 verifySubmit.my인지 꼭 확인하세요!
     });
 });

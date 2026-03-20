@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matching">
+	<select id="selectMatchingList" parameterType="_int" resultType="matchingDTO">
+    SELECT * FROM (
+        SELECT 
+            m.MATCHING_NUMBER AS matchinNumber,  
+            m.MATCHING_START AS matchingStart,
+            m.MATCHING_STATE AS matchingState,
+            m.MENTOR_NUMBER AS mentorNumber,
+            m.MENTEE_NUMBER AS menteeNumber,
+            m.SUBJECT_NUMBER AS subjectNumber,
+            m.PAY_ID AS payId,
+            t1.MEMBER_NAME AS mentorName,        
+            t2.MEMBER_NAME AS menteeName,        
+            s.SUBJECT_NAME AS subjectName        
+        FROM UB_MATCHING m
+        JOIN UB_MEMBER t1 ON m.MENTOR_NUMBER = t1.MEMBER_NUMBER
+        JOIN UB_MEMBER t2 ON m.MENTEE_NUMBER = t2.MEMBER_NUMBER
+        JOIN UB_SUBJECT s ON m.SUBJECT_NUMBER = s.SUBJECT_NUMBER
+        WHERE (m.MENTOR_NUMBER = #{memberNumber} OR m.MENTEE_NUMBER = #{memberNumber})
+          AND m.MATCHING_STATE = '매칭중'  
+        ORDER BY m.MATCHING_START DESC
+    )
+    WHERE ROWNUM = 1  -- Oracle 기준 최신 1건만 추출
+	</select>
+	
+	<!-- 매칭 취소 신청이 DB에 생기면 변경 -->
+	<update id="updateMatchingCancel" parameterType="matchingDTO">
+    UPDATE UB_MATCHING 
+    SET 
+        MATCHING_STATE = '매칭 취소', 
+        MATCHING_CANCEL = SYSDATE,
+        MATCHING_CAN_REASON = #{matchingCanReason} WHERE MATCHING_NUMBER = #{matchinNumber}
+	</update>
+	
+	<update id="updatePayId" parameterType="map">
+        UPDATE UB_MATCHING 
+        SET PAY_ID = #{payId} 
+        WHERE MATCHING_NUMBER = #{matchingNumber}
+    </update>
+</mapper>

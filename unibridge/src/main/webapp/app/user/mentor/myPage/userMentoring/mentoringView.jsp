@@ -33,22 +33,11 @@
 		<aside>
 			<div class="myPageTitle">마이페이지</div>
 			<ul>
-				<li><a
-					href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my">계정
-						관리</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/mvc/auth/mentor/survey.my">설문
-						조사</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my">매칭
-						정보</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringMain.my"
-					class="${requestURI.contains('mentoring') ? 'active' : ''}">멘토링</a>
-				</li>
-				<li><a
-					href="${pageContext.request.contextPath}/mvc/auth/mentor/app/delete.my">회원
-						탈퇴</a></li>
+				<li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my" >계정 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/survey.my">설문 조사</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my">매칭 정보</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringCreate.my" class="active">멘토링</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/app/delete.my">회원 탈퇴</a></li>
 			</ul>
 		</aside>
 
@@ -64,8 +53,8 @@
 			<form method="post"
 				action="${pageContext.request.contextPath}/auth/mentor/mentoringUpdate.my">
 				<%-- 수정을 위해 데이터의 고유 ID(PK)를 숨겨서 전달: DTO의 internalId와 매칭 --%>
-				<input type="hidden" name="mentoringNumber"
-					value="${mentoring.mentoringNumber}">
+				<input type="hidden" name="mentoringId"
+					value="${mentoring.internalId}">
 
 				<div id="contentsMain">
 					<div id="mentoringBackground">

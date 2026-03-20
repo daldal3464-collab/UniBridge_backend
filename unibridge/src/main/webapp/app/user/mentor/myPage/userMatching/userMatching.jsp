@@ -1,109 +1,143 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멘토 매칭 정보</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/mentor/myPage/userMatching/userMatching.css">
-    <script defer src="${pageContext.request.contextPath}/assets/js/user/mentor/myPage/userMatching/userMatching.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>멘토 매칭 정보</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/footer.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/mentor/myPage/userMatching/userMatching.css">
+<script defer
+	src="${pageContext.request.contextPath}/assets/js/user/mentor/myPage/userMatching/userMatching.js"></script>
 </head>
 <body>
-    
-    <jsp:include page="/app/user/header.jsp" />
 
-    <div class="mainContainer">
-        <aside>
-            <div class="myPageTitle">마이페이지</div>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my" >계정 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/survey.my">설문 조사</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my" class="active">매칭 정보</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringCreate.my">멘토링</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentor/app/delete.my">회원 탈퇴</a></li>
-            </ul>
-        </aside>
-        <main>
-            <div class="userManageTitle">
-                <img src="${pageContext.request.contextPath}/assets/img/user/userProfile/matching.png" alt="프로필 아이콘">
-                <div class="title">매칭 정보</div>
-            </div>
-            <div class="container"> 
-                <div class="userTypeBox">
-                    <div class="mentoring">
-                        <div class="userText">
-                            <label>멘토 이름</label>
-                            <label>홍길동</label>
-                        </div>
-                        <div class="userText">
-                            <label>멘티 이름</label>
-                            <label>장발장</label>
-                        </div>
-                        <div class="userText">
-                            <label>멘토링 과목</label>
-                            <label>Java</label>
-                        </div>
-                        <div class="userText">
-                            <label>멘토링 시작일</label>
-                            <label>2025/02/28</label>
-                        </div>
-                        <div class="userText">
-                            <label>학습보고서</label>
-                            <button class="mentoringCheck" id="reportBtn">학습보고서 확인</button>
-                        </div>
-                    </div>
-                    <button type="submit" class="matchingCancel" id="openModalBtn">매칭 취소 신청</button>
-                </div>
-            </div>
-            <div id="matchingModal" class="matingCancel">
-                <div class="cancelBox">
-                    <button class="closeBtn"><img src="${pageContext.request.contextPath}/assets/img/user/userProfile/close.png" alt=""></button>
-                    <div class="cacelTitle">매칭 취소 신청서</div>
-                    <div class="cancelModalBox">
-                        <form>
-                            <div class="infoGrid">
-                                <div class="printRow">
-                                    <label>멘토 이름</label>
-                                    <div class="mentoringText">홍길동</div>
-                                </div>
-                                <div class="printRow">
-                                    <label>멘티 이름</label>
-                                    <div class="mentoringText">장발장</div>
-                                </div>
-                                <div class="printRow">
-                                    <label>멘토링 과목</label>
-                                    <div class="mentoringText">Java</div>
-                                </div>
-                                <div class="printRow">
-                                    <label>시작일</label>
-                                    <div class="mentoringText">2025/02/28</div>
-                                </div>
-                            </div>
+	<jsp:include page="/app/user/header.jsp" />
 
-                            <div class="cencelInputBox">
-                                <div class="contextTitle">매칭취소 사유</div>
-                                <textarea class="cencelIput"></textarea>
-                            </div>
+	<div class="mainContainer">
+		<aside>
+			<div class="myPageTitle">마이페이지</div>
+			<ul>
+				<li><a
+					href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my">계정관리</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/mvc/auth/mentor/survey.my">설문조사</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my"
+					class="active">매칭 정보</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/mvc/auth/mentor/mentoringCreate.my">멘토링</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/mvc/auth/mentor/delete.my">회원탈퇴</a></li>
+			</ul>
+		</aside>
+		<main>
+			<div class="userManageTitle">
+				<img
+					src="${pageContext.request.contextPath}/assets/img/user/userProfile/matching.png"
+					alt="프로필 아이콘">
+				<div class="title">매칭 정보</div>
+			</div>
 
-                            <div class="cancelFooter">
-                                <button type="button" class="submitBtn" id="sumbitBtn">취소 신청</button>
-                                <button type="button" class="cancelBtn" id="closeModalBtn">취소</button>
-                            </div>
-                        </form>
+			<div class="container">
+				<c:forEach var="matching" items="${matchingList}">
+					<fmt:parseDate value="${matching.matchingStart}" var="parsedDate"
+						pattern="yyyy-MM-dd HH:mm:ss" />
 
-                    </div>
-                </div>
-            </div>
-            
-        </main>
+					<div class="userTypeBox">
+						<div class="mentoring">
+							<div class="userText">
+								<label>결제 번호</label> <label> <c:choose>
+										<c:when test="${matching.payId > 0}">${matching.payId}</c:when>
+										<partial>이전 내역 혹은 미결제</partial>
+									</c:choose>
+								</label>
+							</div>
+							<div class="userText">
+								<label>멘토 이름</label> <label><c:out
+										value="${matching.mentorName}" /></label>
+							</div>
+							<div class="userText">
+								<label>멘티 이름</label> <label><c:out
+										value="${matching.menteeName}" /></label>
+							</div>
+							<div class="userText">
+								<label>멘토링 과목</label> <label><c:out
+										value="${matching.subjectName}" /></label>
+							</div>
+							<div class="userText">
+								<label>멘토링 시작일</label> <label><fmt:formatDate
+										value="${parsedDate}" pattern="yyyy/MM/dd" /></label>
+							</div>
+						</div>
 
-    </div>
+						<button type="button" class="matchingCancel"
+							onclick="openCancelModal('${matching.matchingNumber}')">매칭
+							취소 신청</button>
+					</div>
 
-    <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/footer.js"></script>
+					<div id="matchingModal_${matching.matchingNumber}"
+						class="matingCancel" style="display: none;">
+						<div class="cancelBox">
+							<button type="button" class="closeBtn"
+								onclick="closeCancelModal('${matching.matchingNumber}')">
+								<img
+									src="${pageContext.request.contextPath}/assets/img/user/userProfile/close.png"
+									alt="닫기">
+							</button>
+							<div class="cacelTitle">매칭 취소 신청서</div>
+							<div class="cancelModalBox">
+								<form id="cancelForm_${matching.matchingNumber}" method="post"
+									action="${pageContext.request.contextPath}/mvc/auth/mentor/matching.my">
+									<input type="hidden" name="matchingNumber"
+										value="${matching.matchingNumber}">
+
+									<div class="infoGrid">
+										<div class="printRow">
+											<label>멘토링 과목</label>
+											<div class="mentoringText">
+												<c:out value="${matching.subjectName}" />
+											</div>
+										</div>
+										<div class="printRow">
+											<label>결제 번호</label>
+											<div class="mentoringText">${matching.payId}</div>
+										</div>
+									</div>
+
+									<div class="cencelInputBox">
+										<div class="contextTitle">매칭취소 사유</div>
+										<textarea name="matchingCanReason" class="cencelIput"
+											maxlength="1024" placeholder="취소 사유를 입력해주세요"></textarea>
+									</div>
+
+									<div class="cancelFooter">
+										<button type="button" class="submitBtn"
+											onclick="submitCancel('${matching.matchingNumber}')">취소
+											신청</button>
+										<button type="button" class="cancelBtn"
+											onclick="closeCancelModal('${matching.matchingNumber}')">닫기</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		</main>
+	</div>
+
+	<script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/footer.js"></script>
 </body>
 </html>
