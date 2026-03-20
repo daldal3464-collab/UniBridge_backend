@@ -10,7 +10,7 @@
 	
 	<!-- 메인페이지  -->
 	<select id="membertotal" resultType="int">
-		SELECT 
+		SELECT count(*) FROM UB_MEMBER
 	</select>
 	
 	<select id="mentortotal" resultType="int">
@@ -22,7 +22,7 @@
 	</select>
 	
 	<select id="matchingtotal" resultType="int">
-		SELECT count(*) FROM UB_MATCHING
+		SELECT count(*) FROM UB_MATCHING WHERE MATCHING_STATE = '매칭중'
 	</select>
 	
 	
@@ -52,11 +52,11 @@
 	</select>
 	
 	<!-- 멘티 게시판 -->
-	<select id="getTotal" resultType = "int">
+	<select id="menteeGetTotal" resultType = "int">
 		select count(*) from UB_MENTEE_BOARD
 	</select>
 	
-	<select id="selectAll" resultType = "AdMenteeBoardListDTO">
+	<select id="menteeSelectAll" resultType = "AdMenteeBoardListDTO">
 		<![CDATA[
 			SELECT * FROM (
 				SELECT ROWNUM AS rnum, subquery.*
@@ -69,12 +69,13 @@
 					FROM UB_MENTEE_BOARD umb
 					LEFT JOIN UB_MEMBER um ON um.MEMBER_NUMBER = umb.MEMBER_NUMBER 
 					LEFT JOIN UB_ADMIN UA ON umb.admin_number = ua.admin_number
+					ORDER BY umb.MENTEEBOARD_NUMBER desc
 				) subquery
 			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
 		]]>
 	</select>
 	
-	<select id="selectFilter" resultType="AdMenteeBoardListDTO">
+	<select id="menteeSelectFilter" resultType="AdMenteeBoardListDTO">
 		<![CDATA[
 			SELECT * FROM (
 				SELECT ROWNUM AS rnum, subquery.*
@@ -94,5 +95,65 @@
 			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
 		]]>
 	</select>
+	
+	<!-- 멘티 조회수 증가 -->
+	<update id="menteeUpdateReadCount" parameterType="int">
+		UPDATE UB_MENTOR_BOARD
+		SET BOARD_CLICK = BOARD_CLICK + 1
+		WHERE Mentorboard_number = #{boardNumber}
+	</update>
+	
+	
+	<!-- 멘토 게시판 -->
+	<select id="mentorGetTotal" resultType = "int">
+		select count(*) from UB_MENTOR_BOARD
+	</select>
+	
+	<select id="mentorSelectAll" resultType = "AdMentorBoardListDTO">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT ROWNUM AS rnum, subquery.*
+				FROM (
+					SELECT umb.mentorboard_number, board_title, board_click, board_date, 
+						CASE
+							WHEN umb.admin_number IS NOT NULL THEN ua.admin_Nickname
+							WHEN umb.MEMBER_number IS NOT NULL THEN um.MEMBER_nickname
+						END AS "write_nickname"
+					FROM UB_MENTOR_BOARD umb
+					LEFT JOIN UB_MEMBER um ON um.MEMBER_NUMBER = umb.MEMBER_NUMBER 
+					LEFT JOIN UB_ADMIN UA ON umb.admin_number = ua.admin_number
+					ORDER BY umb.MENTORBOARD_NUMBER desc
+				) subquery
+			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
+		]]>
+	</select>
+	
+	<select id="mentorSelectFilter" resultType="AdMentorBoardListDTO">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT ROWNUM AS rnum, subquery.*
+				FROM (
+					SELECT umb.mentorboard_number, board_title, board_click, board_date, 
+						CASE
+							WHEN umb.admin_number IS NOT NULL THEN ua.admin_Nickname
+							WHEN umb.MEMBER_number IS NOT NULL THEN um.MEMBER_nickname
+						END AS "write_nickname"
+					FROM UB_MENTOR_BOARD umb
+					LEFT JOIN UB_MEMBER um ON um.MEMBER_NUMBER = umb.MEMBER_NUMBER 
+					LEFT JOIN UB_ADMIN UA ON umb.admin_number = ua.admin_number
+					WHERE board_date BETWEEN TO_DATE(#{dateFrom}, 'YYYY-MM-DD')
+					AND TO_DATE(#{dateTo}, 'YYYY-MM-DD')
+					ORDER BY umb.MENTORBOARD_NUMBER desc
+				) subquery
+			)WHERE rnum BETWEEN #{startRow} AND #{endRow}
+		]]>
+	</select>
+	
+	<!-- 멘토 조회수 증가 -->
+	<update id="mentorUpdateReadCount" parameterType="int">
+		UPDATE UB_MENTEE_BOARD
+		SET BOARD_CLICK = BOARD_CLICK + 1
+		WHERE Menteeboard_number = #{boardNumber}
+	</update>
 	
 </mapper>

@@ -38,8 +38,10 @@ public class AdminMenteeBoardController implements Execute{
 		pageFilter.put("startRow", startRow);
 		pageFilter.put("endRow", endRow);
 		
+		System.out.println(request.getParameter("dateFrom"));
 		
-		if(request.getParameter("dateFrom") != null && request.getParameter("dataTo") != null) {
+		
+		if(request.getParameter("dateFrom") != null && request.getParameter("dateTo") != null) {
 			System.out.println("날짜 범위가 있는 경우");
 			int dateFrom = Integer.parseInt(request.getParameter("dateFrom"));
 			int dateTo = Integer.parseInt(request.getParameter("dateTo"));
@@ -50,14 +52,12 @@ public class AdminMenteeBoardController implements Execute{
 			// 게시글 랜더링 조회
 			List<AdMenteeBoardListDTO> boardList = AdMenteeBoardDAO.selectFilter(pageFilter);
 			request.setAttribute("boardList", boardList);
-			System.out.println("boardList : " + boardList);
 			
 		}else {
 			System.out.println("날짜 범위가 없는 경우");
 			// 게시글 전체 조회
 			List<AdMenteeBoardListDTO> boardList = AdMenteeBoardDAO.selectAll(pageFilter);
 			request.setAttribute("boardList", boardList);
-			System.out.println("boardList : " + boardList);
 			
 		}
 		
@@ -90,7 +90,7 @@ public class AdminMenteeBoardController implements Execute{
 
 		System.out.println("======페이징 정보 확인======");
 		System.out.println("pageFilter : " + pageFilter);
-		System.out.println("boardList : " + request.getParameter("boardList"));
+		System.out.println("boardList : " + request.getAttribute("boardList"));
 		System.out.println(
 				"startPage : " + startPage + ", endPage : " + endPage + ", prev : " + prev + ", next : " + next);
 		System.out.println("=========================");
