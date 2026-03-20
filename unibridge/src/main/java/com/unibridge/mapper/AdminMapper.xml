@@ -3,7 +3,7 @@
 <mapper namespace="admin">
 
 	<!-- 관리자 로그인 -->
-	<select id="adlogin" parameterType="AdminDTO" resultType="AdminDTO">
+	<select id="adlogin" parameterType="AdminDTO" resultType="int">
 		SELECT * FROM UB_ADMIN
 		WHERE admin_id = #{adminId} and admin_pw = #{adminPw}
 	</select>

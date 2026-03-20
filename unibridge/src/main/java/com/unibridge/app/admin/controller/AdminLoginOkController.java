@@ -34,11 +34,11 @@ public class AdminLoginOkController implements Execute{
 		adminNumber = adminDAO.login(adminDTO);
 		System.out.println(adminNumber + " AdminLiginOkController넘버값확인");
 		if(adminNumber != -1) {
-			path = request.getContextPath()+"/app/admin/adminMain/main.admin";
+			path = request.getContextPath() + "/main.admin";
 			session.setAttribute("adminNumber", adminNumber);
 			System.out.println("세션 : " +  session.getAttribute("adminNumber"));			
 		}else {
-			path = request.getContextPath()+"/app/admin/adminLogin/login.admin?login=fail";
+			path = request.getContextPath() + "/login.admin?login=fail";
 		}
 		
 		System.out.println("path : " + path);
