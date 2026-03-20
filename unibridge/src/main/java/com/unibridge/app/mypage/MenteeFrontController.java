@@ -12,7 +12,8 @@ import com.unibridge.app.member.controller.MenteeDeleteController;
 import com.unibridge.app.member.controller.MenteeMangeController;
 import com.unibridge.app.member.controller.MatchingController;
 import com.unibridge.app.member.controller.MenteeUpdateOkController;
-import com.unibridge.app.member.controller.MenteeVerifyController;
+import com.unibridge.app.member.controller.MenteeVerifyActionController;
+import com.unibridge.app.member.controller.MenteeVerifySubmitController;
 import com.unibridge.app.mypage.matching.controller.PayLogController;
 import com.unibridge.app.mypage.survey.controller.MenteeSurveyController;
 
@@ -37,17 +38,32 @@ public class MenteeFrontController implements Execute {
 			outResult = new MenteeMangeController().execute(request, response);
 			System.out.println("[Log] 결과: MenteeMangeController 실행 완료!");
 			break;
-		case "verify.my": // 인증 로직 처리
-			System.out.println("[Log] 결과: MenteeVerifyController 실행 시도...");
-		    outResult = new MenteeVerifyController().execute(request, response);
-		    System.out.println("[Log] 결과: MenteeVerifyController 실행 완료!");
-		    break;
-		case "updateOk.my":
+			
+		case "verify.my": // 1. 인증 페이지로 '단순 이동'
+	        System.out.println("[Log] 인증 페이지 이동 처리");
+	        outResult = new Result();
+	        outResult.setPath("/app/user/mentee/myPage/userManage/userModifyCheck.jsp");
+	        outResult.setRedirect(false); // forward 방식
+	        break;
+
+	    case "verifyAction.my": // 2. 인증번호 발송 및 AJAX 검증 (SOLAPI 연동)
+	        System.out.println("[Log] 인증 AJAX 액션 실행");
+	        // 기존 MenteeVerifyController의 AJAX 로직만 담당하는 컨트롤러로 연결
+	        outResult = new MenteeVerifyActionController().execute(request, response);
+	        break;
+
+	    case "verifySubmit.my": // 3. 최종 비밀번호 및 인증 상태 체크 확인
+	        System.out.println("[Log] 최종 수정 제출 검증 실행");
+	        outResult = new MenteeVerifySubmitController().execute(request, response);
+	        break;
+	        
+		case "updateOk.my": // 회원 정보 수정 페이지
             // [추가] 실제 DB 데이터 수정 처리
             System.out.println("[Log] 결과: MenteeUpdateOkController 실행...");
             outResult = new MenteeUpdateOkController().execute(request, response);
             System.out.println("[Log] 결과: MenteeUpdateOkController 실행완료!");
             break;
+            
 		case "finishUpdate.my": // 수정 완료 단순 이동 처리
             System.out.println("[Log] 결과: 수정 완료 후 마이페이지 메인으로 리다이렉트");
             outResult = new Result();
@@ -55,11 +71,13 @@ public class MenteeFrontController implements Execute {
             outResult.setPath(request.getContextPath() + "/auth/mentee/myPage.my");
             outResult.setRedirect(true); 
             break;
+            
 		case "survey.my": // 설문조사
 			System.out.println("[Log] 결과: MenteeSurveyController 실행 시도...");
 		    outResult = new MenteeSurveyController().execute(request, response);
 		    System.out.println("[Log] 결과: MenteeSurveyController 실행 완료!");
 		    break;
+		    
 		case "delete.my": //회원탈퇴
 			System.out.println("[Log] 결과: MenteeDeleteController 실행 시도...");
 			outResult = new MenteeDeleteController().execute(request, response);
@@ -70,11 +88,13 @@ public class MenteeFrontController implements Execute {
 			outResult = new MatchingController().execute(request, response);
 			System.out.println("[Log] 결과: MatchingController 실행 완료!");
 			break;
+			
 		case "log.my": //결제정보
 			System.out.println("[Log] 결과: PayLogController 실행 시도...");
 			outResult = new PayLogController().execute(request, response);
 			System.out.println("[Log] 결과: PayLogController 실행 완료!");
 			break;
+			
 		default:
 			System.out.println("[Warn] 매칭되는 target이 없음: " + target);
 			break;

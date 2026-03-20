@@ -59,12 +59,17 @@ public class MypageFrontController extends HttpServlet {
 			return;
 		}
 
-		if (result != null) {
-			if (result.isRedirect()) {
-				response.sendRedirect(result.getPath());
-			} else {
-				request.getRequestDispatcher(result.getPath()).forward(request, response);
-			}
+		if (result != null && result.getPath() != null) {
+		    // 이동할 경로(Path)가 있는 경우에만 forward 또는 redirect 수행
+		    if (result.isRedirect()) {
+		        response.sendRedirect(result.getPath());
+		    } else {
+		        request.getRequestDispatcher(result.getPath()).forward(request, response);
+		    }
+		} else {
+		    // result가 null이거나 path가 null인 경우 (AJAX 응답 등)
+		    // 서버 로그에 남겨서 흐름을 확인합니다.
+		    System.out.println("[Log] 이동 경로가 없으므로 화면 전환을 생략합니다. (AJAX 또는 내부 처리 완료)");
 		}
 	}
 

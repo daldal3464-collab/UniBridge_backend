@@ -20,12 +20,13 @@ a:link, a:visited{
   color : #94A3B8;
 }
 
-a:hover{
-  color : black;
+nav ul li a:hover {
+  color: black;
 }
 
-#nowCategory{
-  color : red;
+nav ul li a#nowCategory {
+  color: red !important;
+  font-weight: bold;
 }
 
 nav, hr{

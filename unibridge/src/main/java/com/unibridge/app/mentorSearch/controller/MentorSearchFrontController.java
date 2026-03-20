@@ -45,16 +45,12 @@ public class MentorSearchFrontController extends HttpServlet {
 			// 3. 분기 처리
 			switch (target) {
 			case "/mentor/mentorSearch.sch":
+			case "/mentor/mentorSearchOk.sch":
 				System.out.println("[Log] 결과: 멘토 검색 페이지로 단순 이동");
 				result = new Result();
 				result.setPath("/app/user/mentorSearch/mentorSearch.jsp");
-				result.setRedirect(false);
-				break;
-
-			case "/mentor/mentorSearchOk.sch":
-				System.out.println("[Log] 결과: MentorSearchOkController 실행 시도...");
 				result = new MentorSearchOkController().execute(request, response);
-				System.out.println("[Log] 결과: MentorSearchOkController 실행 완료!");
+				result.setRedirect(false);
 				break;
 
 			case "/mentor/mentorDetailOk.sch":

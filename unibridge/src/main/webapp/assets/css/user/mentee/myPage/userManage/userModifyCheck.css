@@ -7,7 +7,6 @@
 
 body {
     background-color: white;
-    /* 폰트 글꼴 지정 NanumSquareRound', sans-serif; */
     font-family: 'NanumSquareRound', sans-serif; 
 }
 
@@ -17,7 +16,7 @@ body {
     margin-top: 40px;
     gap: 30px;
     padding: 80px 100px;
-    min-height: 100vh; /* 고정값보다는 vh 단위가 유연합니다 */
+    min-height: 100vh;
 }
 
 a {
@@ -46,44 +45,32 @@ aside {
     margin-bottom: 20px;
 }
 
-/* 사이드바 리스트 초기화 */
 aside ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* 간격 살짝 조정 */
+    gap: 10px;
 }
 
-/* li가 아닌 a 태그에 스타일을 집중 (클릭 범위 확대) */
 aside ul li a {
     display: block;
     padding: 15px 20px;
     border-radius: 12px;
-    font-size: 20px; /* 25px은 너무 커서 레이아웃을 깰 수 있음 */
+    font-size: 20px;
     color: #888;
     transition: all 0.2s;
     text-align: center;
 }
 
-/* 마우스 호버 시 */
 aside ul li a:hover {
     background-color: #eef2ff;
     color: #4f73e3;
 }
 
-aside ul li a:hover {
-    background-color: #eef2ff;
-    color: #4f73e3;
-}
-
-/* ✅ 활성화된 메뉴 스타일 (이 부분이 적용됩니다) */
 aside ul li a.active {
-    /* background-color: #4f73e3; 배경을 파란색으로 */
-    color: #4f73e3;              /* 글자를 흰색으로 (혹은 원하는 디자인대로) */
+    color: #4f73e3;
     font-weight: 700;
 }
-
-/* 사이드바 끝 */
 
 /* 메인 콘텐츠 영역 */
 main {
@@ -126,63 +113,124 @@ main {
     height: 65%;
     text-align: center;
     justify-content: center;
-    background: #eef2ff;   /* 연한 배경만, 테두리 없음 */
+    background: #eef2ff;
     padding: 40px 50px;
     border-radius: 16px;
-    border: 1px solid black;           /* 기존 border 제거 */
+    border: 1px solid black;
     position: relative;
     margin-top: 30px;
-
 }
 
 .modifyForm {
-    width: 100%;       /* 부모 안에서 가득 차게 하거나 */
-    max-width: 800px;  /* 적절한 최대 너비를 설정하여 너무 퍼지지 않게 조절 */
+    width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    /* margin-left: 150px; */
 }
 
+/* ✅ inputGroup: 세로 방향으로 라벨 → 입력행 → 에러 순서 */
 .inputGroup {
-    display: flex;           /* 가로 나열 */
-    align-items: center;     /* 세로축 중앙 */
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+/* ✅ 라벨: 모든 inputGroup에서 동일한 너비·정렬 유지 */
+label {
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+/* ✅ inputRow: 입력창 + 버튼을 한 줄에 배치 */
+.inputRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+/* ✅ 모든 input: 동일한 높이·스타일, flex:1로 버튼과 공간 분할 */
+input {
+    flex: 1;
+    height: 44px;
+    background-color: white;
+    border: 1px solid #CFE0FF;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 15px;
+}
+
+/* ✅ 현재 비밀번호 inputGroup은 버튼이 없으므로 input이 전체 너비 차지 */
+.inputGroup > input {
+    width: 100%;
+    flex: unset;
+    height: 44px;
+    background-color: white;
+    border: 1px solid #CFE0FF;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 15px;
+}
+
+/* ✅ 인증번호 전송 / 인증 확인 버튼: 고정 너비로 입력창 길이 통일 */
+.duplication {
+    flex-shrink: 0;
+    width: 110px;
+    height: 44px;
+    padding: 0 10px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ✅ spacer: 비밀번호 행에서 버튼 자리를 확보해 input 너비를 맞춤 */
+.spacer {
+    flex-shrink: 0;
+    width: 110px;
+    height: 44px;
+}
+
+/* ✅ errorText: 입력창(inputRow) 바로 아래, 왼쪽 정렬 */
+.errorText {
+    color: #ff4d4f;
+    font-size: 13px;
+    margin-top: 6px;
+    font-weight: 400;
+    text-align: left;
+    display: block;
+    width: 100%;
+}
+
+/* 기존 유지 클래스 */
+.inputGroupRow {
+    display: flex;
+    align-items: center;
     gap: 20px;
 }
 
-label {
-    width: 200px;            /* 라벨 너비를 좀 더 넓게 */
-    text-align: left;
-    font-size: 25px;
-    font-weight: 700;
-}
-
-input {
-    flex: 1;                 /* 남은 공간을 다 채움 */
-    height: 40px;
-    background-color: white;
-    border: 1px solid #CFE0FF; 
-    border-radius: 10px;           
-    padding: 0 15px;
-}
-
-.duplication{
-    margin-left: 10px;
-    width: 20%;
+.duplicationBtn {
+    width: 100px;
     padding: 10px;
     background-color: white;
     border: 1px solid black;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
-}
-
-.spacer {
-    margin-left: 10px;
-    width: 20%; /* .duplication 버튼과 동일한 너비 */
+    white-space: nowrap;
 }
 
 /* 수정 버튼 우측 하단 absolute */
