@@ -1,94 +1,92 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // ── 공통 설정 ──
-    // contextPath는 이미 JSP 하단 <script>에서 선언되었으므로 여기서 다시 선언하지 않습니다.
-    // 만약 선언이 안 되어 있다면 아래 한 줄만 남기세요.
-    const cPath = window.contextPath || ""; 
-
-    // ── 1. 프로필 사진 관리 ──
-    const profileImg = document.querySelector(".userImg > img");
-    const photoBtn = document.querySelector("#imgBtn");
-    const photoError = document.querySelector(".userImg .errorMsg");
-    let isPhotoAttached = !profileImg.src.includes("ex1.png");
-
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
-    
-    photoBtn.addEventListener("click", (e) => {
-        e.preventDefault(); // 버튼 클릭 시 폼 제출 방지
-        fileInput.click();
-    });
-
-    fileInput.addEventListener("change", (e) => {
-        const file = e.target.files; // 인덱스 추가
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                profileImg.src = event.target.result;
-                isPhotoAttached = true;
-                photoError.textContent = ""; 
-            };
-            reader.readAsDataURL(file);
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 서버에서 처리 완료 후 알림창 띄우기
+    if (window.SERVER_UPDATE_STATUS) {
+        switch(window.SERVER_UPDATE_STATUS) {
+            case "nickname_ok": alert("닉네임이 변경되었습니다."); break;
+            case "password_ok": alert("비밀번호가 성공적으로 변경되었습니다."); break;
+            case "phone_ok": alert("전화번호가 변경되었습니다."); break;
+            case "gender_ok": alert("성별 정보가 업데이트되었습니다."); break;
         }
-    });
+    }
 
-    // ── 2. 전화번호 인증 ──
-    window.sendSms = function() {
-        const phoneInput = document.getElementById("memberPhone");
-        const phone = phoneInput.value.trim();
-
-        if (!phone) {
-            alert("전화번호를 입력해주세요.");
-            return;
-        }
-
-        // URL 확인: contextPath가 중복되지 않도록 주의
-        const url = `${cPath}/mvc/auth/mentee/verify.my?mode=send&phoneNumber=${phone}`;
+    // 2. 닉네임 중복 확인 (AJAX)
+    window.checkNick = function() {
+        const nick = document.getElementById('memberNickname').value.trim();
+        const errorMsg = document.getElementById('nickErrorMsg');
         
-        fetch(url)
-            .then(res => res.text())
-            .then(data => {
-                if (data.trim() === "success") {
-                    alert("인증번호가 발송되었습니다.");
-                } else if (data.trim() === "invalid_format") {
-                    alert("올바른 전화번호 형식이 아닙니다. (010으로 시작하는 11자리)");
-                } else {
-                    alert("발송 실패: " + data);
-                }
-            })
-            .catch(err => console.error("Error:", err));
-    };
+        if(!nick) { alert("닉네임을 입력해주세요."); return; }
 
-    window.verifyCode = function() {
-        const code = document.getElementById("authCodeInput").value.trim();
-        if(!code) {
-            alert("인증번호를 입력하세요.");
-            return;
-        }
-        
-        fetch(`${cPath}/mvc/auth/mentee/verify.my?mode=check`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ authCode: code })
+        fetch(`${window.contextPath}/mvc/auth/mentee/updateOk.my?mode=checkNick&memberNickname=${nick}`, {
+            method: 'POST'
         })
         .then(res => res.text())
         .then(data => {
-            if (data.trim() === "verified") {
-                alert("인증에 성공하였습니다.");
+            if(data.trim() === "available") {
+                alert("사용 가능한 닉네임입니다.");
+                errorMsg.innerText = "";
+                window.isNickChecked = true; // 전역 변수로 체크 여부 저장
             } else {
-                alert("인증번호가 일치하지 않거나 만료되었습니다.");
+                errorMsg.innerText = "이미 사용 중인 닉네임입니다.";
+                window.isNickChecked = false;
             }
         });
     };
 
-    // ── 3. 완료 버튼 ──
-    document.querySelector(".userModifyBtn").addEventListener("click", () => {
-        if (!isPhotoAttached) {
-            photoError.style.color = "red";
-            photoError.textContent = "사진 첨부는 필수입니다.";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return;
+    // 3. 비밀번호 일치 확인 (단순 클라이언트 비교)
+    window.checkPwMatch = function() {
+        const pw = document.getElementById('newPw').value;
+        const confirm = document.getElementById('newPwConfirm').value;
+        const msg = document.getElementById('pwErrorMsg');
+
+        if(pw === confirm && pw !== "") {
+            alert("비밀번호가 일치합니다.");
+            msg.innerText = "";
+            window.isPwMatched = true;
+        } else {
+            msg.innerText = "비밀번호가 일치하지 않습니다.";
+            window.isPwMatched = false;
         }
-        location.href = `${cPath}/mvc/auth/mentee/myPage.my`;
+    };
+
+    // 4. 사진 변경 에러 처리 (완료 버튼 클릭 시)
+    const modifyBtn = document.querySelector('.userModifyBtn');
+    modifyBtn.addEventListener('click', () => {
+        const userImg = document.querySelector('.userImg img');
+        const imgError = document.querySelector('.userImg .errorMsg');
+        
+        // 이미지 소스가 기본이미지이거나 비어있는 경우 (프로젝트 상황에 맞게 수정)
+        if (!userImg.src || userImg.src.includes("default")) { 
+            imgError.innerText = "프로필 사진은 필수입니다.";
+            alert("프로필 사진을 등록해주세요.");
+        } else {
+            // 모든 수정 완료 후 메인 마이페이지로 이동
+            location.href = `${window.contextPath}/mvc/auth/mentee/myPage.my`;
+        }
     });
 });
+
+// 전화번호 인증 관련 함수 (SmsAuthService 활용)
+function sendSms() {
+    const phone = document.getElementById('memberPhone').value;
+    fetch(`${window.contextPath}/mvc/auth/mentee/verifyAction.my?mode=send&phoneNumber=${phone}`, { method: 'POST' })
+    .then(res => res.text())
+    .then(data => alert(data === "success" ? "인증번호가 발송되었습니다." : "발송 실패"));
+}
+
+function verifyCode() {
+    const code = document.getElementById('authCodeInput').value;
+    fetch(`${window.contextPath}/mvc/auth/mentee/verifyAction.my?mode=check`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authCode: code })
+    })
+    .then(res => res.text())
+    .then(data => {
+        if(data.trim() === "verified") {
+            alert("인증 성공!");
+            window.isPhoneVerified = true;
+        } else {
+            document.getElementById('authCodeError').innerText = "인증번호가 틀렸습니다.";
+        }
+    });
+}

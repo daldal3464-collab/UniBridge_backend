@@ -1,5 +1,7 @@
 package com.unibridge.api;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -9,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.UUID;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -97,6 +100,18 @@ public class SmsAuthService {
             sha256_HMAC.init(new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
             String signature = String.format("%064x", new java.math.BigInteger(1, sha256_HMAC.doFinal((date + salt).getBytes(StandardCharsets.UTF_8))));
 
+            // ================= [콘솔 출력 시작] =================
+            System.out.println("\n========== [Solapi 전송 데이터 확인] ==========");
+            System.out.println("1. 생성된 인증번호: " + code);
+            System.out.println("2. API Key: " + apiKey);
+            System.out.println("3. Signature: " + signature);
+            System.out.println("4. Salt: " + salt);
+            System.out.println("5. Date: " + date);
+            System.out.println("6. 발신번호(From): " + from);
+            System.out.println("7. 수신번호(To): " + to);
+            System.out.println("==============================================\n");
+            // ================= [콘솔 출력 끝] =================
+            
             // 3. API 서버 연결 설정
             URL url = new URL("https://api.solapi.com/messages/v4/send");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -119,10 +134,25 @@ public class SmsAuthService {
                 os.write(root.toString().getBytes(StandardCharsets.UTF_8));
             }
             
+            int responseCode = conn.getResponseCode();
+            System.out.println("[Solapi 결과] HTTP 응답 코드: " + responseCode);
+
+            if (responseCode != 200) {
+                // 에러 발생 시 서버가 보내준 상세 메시지 읽기
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                    	//상세한 에러 사유를 출력
+                        System.out.println("[Solapi Error Details]: " + line);
+                    }
+                }
+            }
+            
             // 6. 결과 반환 (HTTP 200 성공 여부)
             return conn.getResponseCode() == 200;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("[Error] Solapi 발송 중 예외 발생!");
+            e.printStackTrace(); // 콘솔에 찍히는 에러 내용을 반드시 확인해야 합니다.
             return false;
         }
     }

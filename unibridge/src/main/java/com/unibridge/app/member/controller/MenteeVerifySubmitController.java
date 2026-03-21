@@ -8,47 +8,55 @@ import javax.servlet.http.HttpSession;
 
 import com.unibridge.app.Execute;
 import com.unibridge.app.Result;
+import com.unibridge.app.member.dao.MemberDAO;
 import com.unibridge.app.member.dto.MemberDTO;
 
 public class MenteeVerifySubmitController implements Execute {
-    private Result outResult = new Result();
 
     @Override
     public Result execute(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        Result result = new Result();
         HttpSession session = request.getSession();
-        // 1. 세션에서 로그인 유저 정보 및 휴대폰 인증 여부 확인
+        MemberDAO memberDAO = new MemberDAO();
+        
+        // 1. 세션에서 로그인 시 저장한 MemberDTO 객체 획득
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
-        Boolean isPhoneVerified = (Boolean) session.getAttribute("isPhoneVerified");
         
-        // 2. JSP에서 전송된 입력값 가져오기
+        // 2. 비로그인 상태 접근 제어
+        if (loginUser == null) {
+            result.setPath(request.getContextPath() + "/mvc/auth/signin.my"); // 로그인 페이지 경로
+            result.setRedirect(true);
+            return result;
+        }
+
+        // 3. 사용자가 폼에서 입력한 값들
         String inputPw = request.getParameter("password");
-        String inputPhone = request.getParameter("phoneNumber");
+        Boolean isPhoneVerified = (Boolean) session.getAttribute("isPhoneVerified");
 
-        // 3. 비밀번호 일치 검증
-        if (loginUser == null || !loginUser.getMemberPw().equals(inputPw)) {
-            request.setAttribute("pwError", "비밀번호가 일치하지 않습니다.");
-            outResult.setPath("/app/user/mentee/myPage/userManage/userModifyCheck.jsp");
-            outResult.setRedirect(false);
-            return outResult;
+        // 4. DB 검증 (로그인된 유저의 고유 번호 memberNumber 사용)
+        boolean isPwCorrect = memberDAO.checkPassword(loginUser.getMemberNumber(), inputPw);
+
+        // 5. 최종 판단
+        if (isPwCorrect && isPhoneVerified != null && isPhoneVerified) {
+            // 검증 성공 -> 정보 수정 실제 처리 페이지(UpdateOk)로 이동
+            result.setPath(request.getContextPath() + "/mvc/auth/mentee/updateOk.my");
+            result.setRedirect(true); 
+        } else {
+            // 검증 실패 시 에러 메시지 설정
+            if (!isPwCorrect) {
+                request.setAttribute("pwError", "비밀번호가 일치하지 않습니다.");
+            }
+            if (isPhoneVerified == null || !isPhoneVerified) {
+                request.setAttribute("authError", "휴대폰 인증을 완료해주세요.");
+            }
+            
+            // 입력 폼으로 다시 이동 (Forward 방식이어야 에러 메시지가 유지됨)
+            result.setPath("/app/user/mentee/myPage/userManage/userModifyCheck.jsp");
+            result.setRedirect(false); 
         }
 
-        // 4. 휴대폰 인증 완료 여부 검증
-        if (isPhoneVerified == null || !isPhoneVerified) {
-            request.setAttribute("authError", "휴대폰 인증이 완료되지 않았습니다.");
-            outResult.setPath("/app/user/mentee/myPage/userManage/userModifyCheck.jsp");
-            outResult.setRedirect(false);
-            return outResult;
-        }
-
-        // 5. 모든 검증 성공 시: 수정 로직(UpdateOk)으로 데이터 전달
-        request.setAttribute("newPhoneNumber", inputPhone);
-        
-        // 실제 DB 업데이트를 처리하는 컨트롤러로 이동
-        outResult.setPath(request.getContextPath() + "/auth/mentee/updateOk.my");
-        outResult.setRedirect(true); // 데이터를 가지고 가야 하므로 forward 방식 사용
-        
-        return outResult;
+        return result;
     }
 }

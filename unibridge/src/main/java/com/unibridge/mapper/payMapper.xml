@@ -68,8 +68,7 @@
         <result column="PAY_STATUS" property="payStatus"/>
     </resultMap>
 
-    <select id="selectLatestPaymentByMemberNew" parameterType="long"
-    resultType="com.unibridge.app.pay.dto.PaymentDTO">
+    <select id="selectLatestPaymentByMemberNew" parameterType="long" resultType="paymentDTO">
 	    SELECT *
 	    FROM (
 	        SELECT
@@ -79,9 +78,10 @@
 	            TO_CHAR(p.PAY_DATE, 'YYYY-MM-DD') AS payDate,
 	            p.PAY_STATUS AS payStatus,
 	            m.MATCHING_NUMBER AS matchingNumber, 
-	            m.MENTEE_NUMBER AS memberNumber      
-	        FROM UB_PAY p
+	            m.MENTEE_NUMBER AS memberNumber,
+	            u.MEMBER_ID AS memberId,     u.MEMBER_NAME AS memberName  FROM UB_PAY p
 	        JOIN UB_MATCHING m ON p.PAY_ID = m.PAY_ID
+	        JOIN UB_MEMBER u ON m.MENTEE_NUMBER = u.MEMBER_NUMBER
 	        WHERE m.MENTEE_NUMBER = #{memberNumber}
 	        ORDER BY p.PAY_ID DESC
 	    )

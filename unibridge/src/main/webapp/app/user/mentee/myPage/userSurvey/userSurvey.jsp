@@ -72,8 +72,8 @@
                             <div class="inputRow">
                                 <label>멘토/멘티</label>
                                 <div class="radioGroup">
-                                    <label class="radioItem">
-                                        <span>멘토</span> 
+                                    <label class="radioItem" style="${userRole eq 'MENTEE' ? 'display: none;' : ''}">
+                                        <span style="display: none;" >멘토</span> 
                                         <input type="radio" value="mentor" name="role" class="radioUserType" 
                                         		${userRole eq 'MENTEE' ? 'disabled' : ''} 
                 								${userRole eq 'MENTOR' ? 'checked' : ''}>

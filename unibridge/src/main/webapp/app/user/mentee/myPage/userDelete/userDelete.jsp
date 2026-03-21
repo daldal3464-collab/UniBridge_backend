@@ -49,10 +49,10 @@
                     <div class="inputGroupContainer">
                         <div class="inputGroup">
                             <label>아이디</label>
-                            <input type="text" id="userId" name="userId" class="userInput" placeholder="${loginUser.memberId}" required>
+                            <input type="text" id="userId" name="userId" class="userInput" value="${loginUser.memberId}" required>
                             <div class="spacer"></div>
                         </div>
-                        <div class="errorMsg" id="loginError" style="color: red;">${loginErrorMsg}</div>
+                        	<div class="errorMsg" id="loginError" style="color: red;">${loginErrorMsg}</div> 
                     </div>
                     
                     <div class="inputGroupContainer">

@@ -55,7 +55,9 @@ public class MenteeUpdateOkController implements Execute {
     }
 
     // [POST] 각 폼에서 [변경] 버튼을 눌렀을 때 실행 (데이터 수정)
-    private void doPost(HttpServletRequest request, HttpServletResponse response) {
+    private void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        System.out.println("doPost 실행: DB 업데이트 처리");
+        
         System.out.println("doPost 실행: DB 업데이트 처리");
         
         HttpSession session = request.getSession();
@@ -64,6 +66,20 @@ public class MenteeUpdateOkController implements Execute {
         
         int memberNumber = loginUser.getMemberNumber();
         String updateType = request.getParameter("updateType");
+        String mode = request.getParameter("mode");
+
+        // AJAX 닉네임 중복 검사 로직
+        if ("checkNick".equals(mode)) {
+            String nickname = request.getParameter("memberNickname");
+            int count = dao.checkNickname(nickname, memberNumber); 
+            
+            response.setContentType("text/plain; charset=utf-8");
+            // 이제 여기서 빨간 줄이 사라집니다.
+            response.getWriter().write(count == 0 ? "available" : "duplicated");
+            
+            outResult = null; 
+            return; 
+        }
 
         // 1. 닉네임 수정
         if ("nickname".equals(updateType)) {

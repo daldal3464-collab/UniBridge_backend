@@ -130,4 +130,15 @@ public class MemberDAO {
         // 두 개의 파라미터가 담긴 map을 전달합니다.
         return sqlSession.selectOne("member.checkNicknameExceptMe", map);
     }
+    
+    public String getMemberPw(int memberNumber) {
+        // 세션에서 member_number를 기준으로 DB의 비밀번호 문자열을 가져옴
+        return sqlSession.selectOne("member.getMemberPw", memberNumber);
+    }
+
+    public boolean checkPassword(int memberNumber, String inputPw) {
+        String dbPw = getMemberPw(memberNumber);
+        // DB 비밀번호가 존재하고, 사용자가 입력한 비밀번호와 일치하는지 비교
+        return dbPw != null && dbPw.equals(inputPw);
+    }
 }

@@ -8,6 +8,25 @@ public class PaymentDTO {
     private String payStatus;   // PAY_STATUS
     private int memberNumber;   // JSP의 memberNumber와 일치시킴 (기존 menteeNumber 역할)
     private long matchingNumber; // JSP의 matchingNumber를 위해 추가
+    
+    private String memberId;   // 회원 아이디 (UB_MEMBER.MEMBER_ID)
+    private String memberName; // 회원 이름 (UB_MEMBER.MEMBER_NAME)
+
+    public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
 
     // 기본 생성자
     public PaymentDTO() {}
@@ -73,8 +92,7 @@ public class PaymentDTO {
 	public String toString() {
 		return "PaymentDTO [payId=" + payId + ", payAmount=" + payAmount + ", payMethod=" + payMethod + ", payDate="
 				+ payDate + ", payStatus=" + payStatus + ", memberNumber=" + memberNumber + ", matchingNumber="
-				+ matchingNumber + "]";
+				+ matchingNumber + ", memberId=" + memberId + ", memberName=" + memberName + "]";
 	}
 
-    
 }

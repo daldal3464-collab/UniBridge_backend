@@ -55,6 +55,7 @@ public class PayLogController implements Execute{
 
 	    // 결제 내역 있음
 	    request.setAttribute("payLog", payLog);
+	    System.out.println(payLog.toString());
 
 	    outResult.setPath("/app/user/mentee/myPage/userPayLog/payLog.jsp");
 	    outResult.setRedirect(false);

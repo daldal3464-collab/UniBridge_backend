@@ -35,17 +35,17 @@
             <c:if test="${not empty payLog}">
     			<div class="userTypeBox">
 			        <div class="userText">
-			            <label>회원번호</label>
-			            <label>${payLog.memberNumber}</label>
+			            <label>아이디</label>
+			            <label>${payLog.memberId}</label>
 			        </div>
 			
 			        <div class="userText">
-			            <label>결제번호</label>
-			            <label>${payLog.payId}</label>
+			            <label>이름</label>
+			            <label>${payLog.memberName}</label>
 			        </div>
 			
 			        <div class="userText">
-			            <label>매칭번호</label>
+			            <label>계좌</label>
 			            <label>${payLog.matchingNumber}</label>
 			        </div>
 			
@@ -55,18 +55,13 @@
 			        </div>
 			
 			        <div class="userText">
-			            <label>결제수단</label>
-			            <label>${payLog.payMethod}</label>
+			            <label>결제번호</label>
+			            <label>${payLog.payId}</label>
 			        </div>
 			
 			        <div class="userText">
 			            <label>결제일</label>
 			            <label>${payLog.payDate}</label>
-			        </div>
-			
-			        <div class="userText">
-			            <label>결제상태</label>
-			            <label>${payLog.payStatus}</label>
 			        </div>
 			    </div>
 			</c:if>

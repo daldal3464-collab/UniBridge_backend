@@ -130,5 +130,11 @@
 	    WHERE member_nickname = #{memberNickname}
 	      AND member_number != #{memberNumber}
 	</select>
+	
+	<select id="getMemberPw" parameterType="_int" resultType="string">
+	   SELECT member_pw 
+	   FROM UB_MEMBER 
+	   WHERE member_number = #{memberNumber}
+	</select>
    
 </mapper>
