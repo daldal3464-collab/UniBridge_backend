@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/mentor/myPage/userSurvey/userSurvey.css">
+    <script>
+	    // JS 파일에서 사용할 수 있도록 전역 변수 선언
+	    const contextPath = "${pageContext.request.contextPath}";
+	</script>
     <script defer src="${pageContext.request.contextPath}/assets/js/user/mentor/myPage/userSurvey/userSurvey.js"></script>
 </head>
 <body>
@@ -32,6 +37,7 @@
                 <img src="${pageContext.request.contextPath}/assets/img/user/userMyPageImg/userManage.jpg" alt="프로필 아이콘">
                 <div class="title">설문조사</div>
             </div>
+         <c:if test="${not empty survey}">
             <div class="userTypeBox">
                 <div class="userItem">
                     <label>멘토/멘티</label>
@@ -40,21 +46,22 @@
                 <div class="userItem"></div> 
                 <div class="userItem">
                     <label>대학</label>
-                    <div class="userValue">한국대 학교</div>
+                    <div class="userValue">${survey.gradSchool}</div>
                 </div>
                 <div class="userItem">
                     <label>졸업학점</label>
-                    <div class="userValue">4.0</div>
+                    <div class="userValue">${survey.gradDepart}</div>
                 </div>
                 <div class="userItem">
                     <label>교육과목</label>
-                    <div class="userValue">Java</div>
+                    <div class="userValue">${survey.gradScore}</div>
                 </div>
                 <div class="userItem">
                     <label>전공</label>
-                    <div class="userValue">컴퓨터 공학</div>
+                    <div class="userValue">${survey.subjectNumber}</div>
                 </div>
-            </div>
+            </div> 
+         </c:if>
             <button id="userWriteBtn">재작성</button>
             <div id="surveyModal" class="modal">
                 <div class="modalContent">
@@ -62,19 +69,26 @@
                     <div class="surveyTitle">설문 조사</div>
                     <div class="modalBox">
                         <form id="surveyForm" action="${pageContext.request.contextPath}/auth/mentor/survey.my" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="role" value="${userRole eq 'MENTEE' ? 'mentee' : 'mentor'}">
                             <div class="inputRow">
                                 <label>멘토/멘티</label>
                                 <div class="radioGroup">
                                     <label class="radioItem">
-                                        <span>멘토</span> <input type="radio" value="mentor" name="role" class="radioUserType"> 
+                                        <span>멘토</span> 
+                                        <input type="radio" value="mentor" name="role" class="radioUserType" 
+                                        		${userRole eq 'MENTEE' ? 'disabled' : ''} 
+                								${userRole eq 'MENTOR' ? 'checked' : ''}>
                                     </label>
                                     <label class="radioItem">
-                                        <span>멘티</span> <input type="radio" value="mentee" name="role" class="radioUserType" checked> 
+                                        <span>멘티</span> 
+                                        <input type="radio" value="mentee" name="role" class="radioUserType"
+                                        		${userRole eq 'MENTOR' ? 'disabled' : ''} 
+                								${userRole eq 'MENTEE' ? 'checked' : ''}>
                                     </label>
                                 </div>
                             </div>
 
-                            <div id="mentorContent" class="mentorContentList" style="display: none;">
+                            <div id="mentorContent" class="mentorContentList" style="display: block;">
                                 <div class="inputRow">
                                     <label>대학</label>
                                     <input type="text" name="gradSchool" class="modalInput">
@@ -103,7 +117,7 @@
                                 </div>
                             </div>
 
-                            <div id="menteeContent" class="menteeContentList" style="display: block;">
+                            <div id="menteeContent" class="menteeContentList" style="display: none;">
                                 <div class="inputRow">
                                     <label>희망 과목</label>
                                     <select name="subjectNumber" class="modalSelect">
@@ -160,8 +174,5 @@
             </div>
         </main>
     </div>
-
-    <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/footer.js"></script>
 </body>
 </html>
