@@ -1,31 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<!DOCTYPE html><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미정 유저 거부 사유</title>
+    <title>멘티 설문조사 거부 사유 페이지</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/undetermined/myPage/userSurvey/userRefusal.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/mentee/myPage/userSurvey/userRefusal.css">
     <script>
 	    // JS 파일에서 사용할 수 있도록 전역 변수 선언
 	    const contextPath = "${pageContext.request.contextPath}";
 	</script>
-    <script defer src="${pageContext.request.contextPath}/assets/js/user/undetermined/myPage/userSurvey/userSurvey.js"></script>
+    <script defer src="${pageContext.request.contextPath}/assets/js/user/mentee/myPage/userSurvey/userSurvey.js"></script>
 </head>
 <body>
-    
-    <jsp:include page="/app/user/header.jsp" />
 
+    <jsp:include page="/app/user/header.jsp" />
+    
     <div class="mainContainer">
         <aside>
             <div class="myPageTitle">마이페이지</div>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/myPage.my">계정 관리</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/survey.my" class="active">설문 조사</a></li>
-                <li><a href="${pageContext.request.contextPath}/mvc/auth/undecided/delete.my">회원 탈퇴</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentee/myPage.my" >계정 관리</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentee/survey.my" class="active">설문 조사</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentee/log.my">결제 정보</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentee/matching.my">매칭 정보</a></li>
+                <li><a href="${pageContext.request.contextPath}/mvc/auth/mentee/delete.my">회원 탈퇴</a></li>
             </ul>
         </aside>
         <main>
@@ -53,24 +55,32 @@
             </div>
             <button id="userWriteBtn" style="display: ${survey.surveyApproval eq 'F' ? 'block' : 'none'};">재작성</button>
             
-            <div id="surveyModal" class="modal"> <div class="modalContent">
+            <div id="surveyModal" class="modal">
+                <div class="modalContent">
                     <button class="closeBtn"><img src="${pageContext.request.contextPath}/assets/img/user/userProfile/close.png" alt=""></button>
                     <div class="surveyTitle">설문 조사</div>
                     <div class="modalBox">
-                        <form id="surveyForm" action="${pageContext.request.contextPath}/auth/undecided/survey.my" method="post" enctype="multipart/form-data">
+                        <form id="surveyForm" action="${pageContext.request.contextPath}/auth/mentee/survey.my" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="role" value="${userRole eq 'MENTEE' ? 'mentee' : 'mentor'}">
                             <div class="inputRow">
                                 <label>멘토/멘티</label>
                                 <div class="radioGroup">
-                                    <label class="radioItem">
-                                        <span>멘토</span> <input type="radio" value="mentor" name="role" class="radioUserType" checked> 
+                                    <label class="radioItem" style="${userRole eq 'MENTEE' ? 'display: none;' : ''}">
+                                        <span>멘토</span> 
+                                        <input type="radio" value="mentor" name="role" class="radioUserType" 
+                                        		${userRole eq 'MENTEE' ? 'disabled' : ''} 
+                								${userRole eq 'MENTOR' ? 'checked' : ''}>
                                     </label>
                                     <label class="radioItem">
-                                        <span>멘티</span> <input type="radio" value="mentee" name="role" class="radioUserType"> 
+                                        <span>멘티</span> 
+                                        <input type="radio" value="mentee" name="role" class="radioUserType"
+                                        		${userRole eq 'MENTOR' ? 'disabled' : ''} 
+                								${userRole eq 'MENTEE' ? 'checked' : ''}>
                                     </label>
                                 </div>
                             </div>
 
-                            <div id="mentorContent" class="mentorContentList" style="display: block;">
+                            <div id="mentorContent" class="mentorContentList" style="display: none;">
                                 <div class="inputRow">
                                     <label>대학</label>
                                     <input type="text" name="gradSchool" class="modalInput">
@@ -99,7 +109,7 @@
                                 </div>
                             </div>
 
-                            <div id="menteeContent" class="menteeContentList" style="display: none;">
+                            <div id="menteeContent" class="menteeContentList" style="display: block;">
                                 <div class="inputRow">
                                     <label>희망 과목</label>
                                     <select name="subjectNumber" class="modalSelect">
@@ -134,10 +144,12 @@
 
                             <div class="fileAttachSection">
                                 <p class="fileLabel">파일 첨부</p>
+                                
                                 <div class="fileInputWrapper">
                                     <input type="file" id="surveyFile" name="surveyFile" accept=".pdf, .xlsx, .xls, .doc, .docx, .jpg, .png" onchange="updateFileName()">
+                                    
                                     <div class="fakeFileInput">
-                                        <label for="surveyFile" id="fileSelector" class="fileSelectBtn">파일 선택</label>
+                                        <label for="surveyFile" id="fileSelector" name="surveyFile" class="fileSelectBtn">파일 선택</label>
                                         <label for="surveyFile" id="fileInfoDisplay" class="fileInfoActive" style="display: none;">
                                             <img src="/frontend/assets/img/user/file-icon.png" alt="파일" class="fileIcon">
                                             <span id="fileNameDisplay" class="fileNameText"></span>
@@ -154,10 +166,9 @@
                     </div>
                 </div>
             </div>
-            </c:if>
-        </main>
+		</c:if>
+     </main>
+
     </div>
 
-    <script>const contextPath = "${pageContext.request.contextPath}";</script>
-</body>
 </html>

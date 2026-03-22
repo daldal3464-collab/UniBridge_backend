@@ -79,6 +79,15 @@ public class MenteeSurveyController implements Execute {
 		        // JSP의 <c:if test="${not empty survey}">에서 사용할 이름 "survey"와 일치해야 함
 		        request.setAttribute("survey", survey);
 		        System.out.println("설문 데이터 조회 성공: " + survey.getMenteeSchool());
+		        
+		        // 승인 상태가 'F'(거부)이고, 거부 사유가 있는 경우에만 이동
+		        if ("F".equals(survey.getSurveyApproval()) && survey.getSurveyRejReason() != null) {
+		            System.out.println("[이동] 거부 사유가 발견되어 거부 안내 페이지로 이동합니다.");
+		            outResult.setPath("/app/user/mentee/myPage/userSurvey/userRefusal.jsp");
+		            outResult.setRedirect(false); // 포워딩
+		            return; // 중요: 리턴을 해줘야 아래의 기본 경로 세팅이 실행되지 않음
+		        }
+		        
 		    } else {
 		        System.out.println("해당 회원의 설문 데이터가 존재하지 않습니다.");
 		    }

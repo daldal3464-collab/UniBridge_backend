@@ -70,7 +70,8 @@
                     <div class="userValue">${survey.menteeHopemajor}</div>
                 </div>
             </div>
-            <button id="userWriteBtn">재작성</button>
+            <button id="userWriteBtn" style="display: ${survey.surveyApproval eq 'F' ? 'block' : 'none'};">재작성</button>
+				
             <div id="surveyModal" class="modal">
                 <div class="modalContent">
                     <button class="closeBtn"><img src="${pageContext.request.contextPath}/assets/img/user/userProfile/close.png" alt=""></button>
