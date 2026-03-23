@@ -47,9 +47,15 @@ public class MentorDetailOkController implements Execute {
 			MentorSearchDAO dao = new MentorSearchDAO();
 			MentorSearchDTO mentor = dao.selectMentorDetail(memberNumber);
 
-			// 4. 데이터 바인딩
+			boolean isMatching = false;
+			// 로그인 유저가 멘티일 경우, 시스템 전체에서 매칭 중인 건이 있는지 확인
+			if (loginUser != null && "MENTEE".equals(loginUser.getMemberType())) {
+				isMatching = dao.isMenteeAlreadyMatching(loginUser.getMemberNumber());
+			}
+
 			request.setAttribute("mentor", mentor);
-			// JSP 경로 확인: /app/user/mentorSearch/mentorDetail.jsp (파일명 맞는지 확인하세요)
+			request.setAttribute("isMatching", isMatching); // JSP로 결과 전달
+
 			result.setPath("/app/user/mentorSearch/mentorDetail.jsp");
 			result.setRedirect(false);
 

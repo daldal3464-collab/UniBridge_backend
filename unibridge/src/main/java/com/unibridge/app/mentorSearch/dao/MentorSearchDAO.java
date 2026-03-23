@@ -1,6 +1,9 @@
 package com.unibridge.app.mentorSearch.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.unibridge.app.mentorSearch.dto.MentorSearchDTO;
@@ -16,18 +19,24 @@ public class MentorSearchDAO {
 
 	// 멘토 전체 목록 조회 메서드
 	public List<MentorSearchDTO> selectAllMentors() {
-	    System.out.println(">>> [LOG] DAO: DB 조회를 시작합니다.");
-	    List<MentorSearchDTO> list = sqlSession.selectList("mentorSearch.selectAllMentors");
-	    if (list == null || list.isEmpty()) {
-	        System.out.println(">>> [LOG] DAO: 조회된 데이터가 0건입니다. DB 조건을 확인하세요.");
-	    } else {
-	        System.out.println(">>> [LOG] DAO: 조회 성공! 데이터 수: " + list.size());
-	    }
-	    return list;
+		System.out.println(">>> [LOG] DAO: DB 조회를 시작합니다.");
+		List<MentorSearchDTO> list = sqlSession.selectList("mentorSearch.selectAllMentors");
+		if (list == null || list.isEmpty()) {
+			System.out.println(">>> [LOG] DAO: 조회된 데이터가 0건입니다. DB 조건을 확인하세요.");
+		} else {
+			System.out.println(">>> [LOG] DAO: 조회 성공! 데이터 수: " + list.size());
+		}
+		return list;
 	}
 
 	public MentorSearchDTO selectMentorDetail(long memberNumber) {
 		System.out.println("현재 연결 시도 주소: " + sqlSession.getConfiguration().getEnvironment().getDataSource());
 		return sqlSession.selectOne("mentorSearch.selectMentorDetail", memberNumber);
+	}
+
+	public boolean isMenteeAlreadyMatching(int menteeNumber) {
+		// 멘티 번호로만 조회하여 매칭 중인 건수가 있는지 확인
+		int count = sqlSession.selectOne("mentorSearch.checkMenteeMatchingStatus", menteeNumber);
+		return count > 0;
 	}
 }
