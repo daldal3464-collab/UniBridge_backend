@@ -44,8 +44,6 @@
 		WHERE ROWNUM = 1
 	</select>
 
-
-
 	<select id="getLatestPayId" resultType="long">
 		SELECT SEQ_PAY.CURRVAL
 		FROM DUAL
@@ -58,7 +56,7 @@
 		WHERE matching_number = #{matchingNumber}
 	</update>
 	
-	<resultMap id="PaymentVOMap" type="com.unibridge.app.pay.dto.PaymentDTO">
+	<resultMap id="PaymentVOMap" type="PaymentDTO">
         <result column="MENTEE_NUMBER" property="memberNumber"/>
         <result column="PAY_ID" property="payId"/>
         <result column="MATCHING_NUMBER" property="matchingNumber"/>
