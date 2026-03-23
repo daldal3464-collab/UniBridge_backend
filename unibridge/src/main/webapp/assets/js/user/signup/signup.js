@@ -1,5 +1,3 @@
-const DUPLICATE_NICKNAMES = ["test"];
-const VALID_AUTH_CODE = "12345";
 
 // 상태 플래그
 let idChecked = false;
@@ -267,44 +265,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 인증번호 발송
-  if (phoneSendBtn && phoneInput) {
-    phoneSendBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const val = phoneInput.value.trim();
-      if (!val) {
-        showError(phoneInput, "전화번호를 입력해주세요.");
-        return;
-      }
-      clearError(phoneInput);
-    });
+  	// 인증번호 발송
+    if (phoneSendBtn && phoneInput) {
+      phoneSendBtn.addEventListener("click", async (e) => { // async 추가
+        e.preventDefault();
+        const val = phoneInput.value.trim();
+        
+        if (!val || !/^010\d{8}$/.test(val)) {
+          showError(phoneInput, "올바른 전화번호를 입력해주세요.");
+          return;
+        }
+        
+        // 서버로 발송 요청 (SignupController의 mode=send 호출)
+        const resp = await fetch(`${window.contextPath}/signup.mem?mode=send&userPhone=${val}`, { method: "POST" });
+        const result = await resp.text();
 
-    phoneInput.addEventListener("input", () => {
-      clearError(phoneInput);
-    });
-  }
+        if (result === "success") {
+          clearAll(phoneInput);
+          showConfirm(phoneInput, "인증번호가 발송되었습니다.");
+          if(authInput) authInput.focus();
+        } else {
+          showError(phoneInput, "발송에 실패했습니다. 다시 시도해주세요.");
+        }
+      });
 
-  // 인증번호 확인
-  if (authCheckBtn && authInput) {
-    authCheckBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-	  clearAll(authInput);
-	  
-      if (authInput.value.trim() !== VALID_AUTH_CODE) {
-        showError(authInput, "인증번호가 일치하지 않습니다.");
+      phoneInput.addEventListener("input", () => {
+        clearError(phoneInput);
+        authVerified = false; // 번호 바뀌면 인증 다시해야함
+        updateSignUpBtn();
+      });
+    }
+
+    // [수정] 인증번호 확인
+    if (authCheckBtn && authInput) {
+      authCheckBtn.addEventListener("click", async (e) => { // async 추가
+        e.preventDefault();
+        clearAll(authInput);
+  	  
+        const code = authInput.value.trim();
+        if(!code) {
+          showError(authInput, "인증번호를 입력해주세요.");
+          return;
+        }
+
+        // 서버로 검증 요청 (SignupController의 mode=check 호출)
+        const resp = await fetch(`${window.contextPath}/signup.mem?mode=check`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authCode: code })
+        });
+        const result = await resp.text();
+
+        if (result === "verified") {
+          showConfirm(authInput, "인증이 완료되었습니다.");
+          authVerified = true;
+          // 인증 완료 시 수정 불가하게 고정
+          phoneInput.readOnly = true;
+          authInput.readOnly = true;
+          phoneSendBtn.disabled = true;
+          authCheckBtn.disabled = true;
+        } else {
+          showError(authInput, "인증번호가 일치하지 않거나 만료되었습니다.");
+          authVerified = false;
+        }
+        updateSignUpBtn();
+      });
+
+      authInput.addEventListener("input", () => {
         authVerified = false;
-      } else {
-        showConfirm(authInput, "인증이 완료되었습니다.");
-        authVerified = true;
-      }
-      updateSignUpBtn();
-    });
-
-    authInput.addEventListener("input", () => {
-      authVerified = false;
-      clearError(authInput);
-    });
-  }
+        clearError(authInput);
+        updateSignUpBtn();
+      });
+    }
 
 /*  // 회원가입 전송
   if (form) {

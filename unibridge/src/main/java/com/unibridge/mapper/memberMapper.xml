@@ -168,7 +168,7 @@
 	    UPDATE UB_MEMBER
 	    SET
 	        survey_number = #{surveyNumber},
-	        survey_write  = 'Y' -- 설문을 작성했으므로 상태를 'Y'로 변경 (필요 없을 시 삭제)
+	        survey_write  = 'Y' 
 	    WHERE 
 	        member_number = #{memberNumber}
 	</update>
