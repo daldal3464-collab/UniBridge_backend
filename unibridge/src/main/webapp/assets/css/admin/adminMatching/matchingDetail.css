@@ -420,6 +420,10 @@ div[class$="icon"] img {
   color: #736969;
 }
 
+.match-cancel-desc-content{
+	resize : none;
+}
+
 .content-container 
 .match-config-detail-container
 .match-config-detail-content

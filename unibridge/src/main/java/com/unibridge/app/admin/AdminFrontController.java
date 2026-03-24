@@ -12,6 +12,8 @@ import com.unibridge.app.admin.controller.AdminLoginController;
 import com.unibridge.app.admin.controller.AdminLoginOkController;
 import com.unibridge.app.admin.controller.AdminLogoutOkController;
 import com.unibridge.app.admin.controller.AdminMainController;
+import com.unibridge.app.admin.controller.AdminMatchingDeleteOkController;
+import com.unibridge.app.admin.controller.AdminMatchingDetailController;
 import com.unibridge.app.admin.controller.AdminMatchingListController;
 import com.unibridge.app.admin.controller.AdminMenteeBoardController;
 import com.unibridge.app.admin.controller.AdminMenteeBoardDeleteOkController;
@@ -247,7 +249,20 @@ public class AdminFrontController extends HttpServlet {
 	    	result = new AdminMatchingListController().execute(request, response);
 	    	System.out.println("매칭 취소 목록 화면 출력 완료");
 	    	break;
-	    
+	    	
+	    case "matchingDetail.admin":
+	    case "/matchingDetail.admin":
+	    	System.out.println("매칭 취소 상세 목록 화면 출력 준비");
+	    	result = new AdminMatchingDetailController().execute(request, response);
+	    	System.out.println("매칭 취소 상세 목록 화면 출력 완료");
+	    	break;
+	    	
+	    case "matchingDeleteOk.admin":
+	    case "/matchingDeleteOk.admin":
+	    	System.out.println("매칭 삭제 준비");
+	    	result = new AdminMatchingDeleteOkController().execute(request, response);
+	    	System.out.println("매칭 삭제 완료");
+	    	break;
 	    	
 	    	
 	    case  "report.admin":

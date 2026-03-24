@@ -30,7 +30,7 @@ public class AdMatchingCancelDTO {
 	private int payId;
 	private String subjectName;
 	private String matchingCancel;
-	private String matching_can_reason;
+	private String matchingCanReason;
 	
 	
 	public int getMatchingNumber() {
@@ -63,14 +63,17 @@ public class AdMatchingCancelDTO {
 	public String getMatchingCancel() {
 		return matchingCancel;
 	}
-	public String getMatching_can_reason() {
-		return matching_can_reason;
-	}
 	public int getPayId() {
 		return payId;
 	}
 	public void setPayId(int payId) {
 		this.payId = payId;
+	}
+	public String getMatchingCanReason() {
+		return matchingCanReason;
+	}
+	public void setMatchingCanReason(String matchingCanReason) {
+		this.matchingCanReason = matchingCanReason;
 	}
 	
 	

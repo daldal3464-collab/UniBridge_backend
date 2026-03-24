@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin/adminMatching/matching.css">
+  <script defer src = "${pageContext.request.contextPath}/assets/js/admin/adminMatching/matchingList.js"></script>
   <title>Document</title>
 </head>
 <body>
@@ -42,12 +43,12 @@
 	                  	<c:out value ="${matching.matchingStart}" />
 	                  </span>
 	                  
-	                  <span class="user-detail">매칭 상세</span>
+	                  <span class="user-detail" data-matching-number="${matching.matchingNumber}">매칭 상세</span>
 	                </div>
 	                
 	                <div class="user-content-container">
 	                  <div class="status">
-	                  	<c:out value="${matching.state}" />
+	                  	<c:out value="${matching.matchingState}" />
 	                  </div>
 	                  
 	                  <div class="vertical-line-container">
@@ -76,7 +77,7 @@
 	                    <div class="vertical-line"></div>
 	                  </div>
 	                  <div class="button-container">
-	                    <div class="match-cancel-button">매칭 취소</div>
+	                    <div class="match-cancel-button" data-matching-number="${matching.matchingNumber}">매칭 취소</div>
 	                  </div>
 	                </div>
 	              </li>
@@ -98,6 +99,10 @@
         s.src = "${pageContext.request.contextPath}/header/adminHeader.js";
         document.body.appendChild(s);
       });
+  </script>
+  
+  <script>
+  const contextPath = "${pageContext.request.contextPath}";
   </script>
 </body>
 </html>

@@ -130,32 +130,20 @@
 	<!-- 멘티 상세 조회 -->
 	<select id="menteeSelectOne" resultType="AdMenteeBoardDTO">
 		SELECT
-		UMB.menteeboard_number, UMB.BOARD_TITLE , UMB.BOARD_CONTENT ,
-		UMB.BOARD_CONTENT , UMB.BOARD_CLICK , UMB.board_date, UF.FILE_NAME,
+		UMB.menteeboard_number, UMB.BOARD_TITLE , UMB.BOARD_CONTENT , UMB.BOARD_CONTENT , UMB.BOARD_CLICK , UMB.board_date, UF.FILE_NAME,
 		CASE
-		WHEN umb.admin_number IS NOT NULL THEN ua.admin_Nickname
-		WHEN
-		umb.MEMBER_number IS NOT NULL THEN um.MEMBER_nickname
-		END AS
-		"write_nickname",
+			WHEN umb.admin_number IS NOT NULL THEN ua.admin_Nickname
+			WHEN umb.MEMBER_number IS NOT NULL THEN um.MEMBER_nickname
+		END AS "write_nickname",
 		CASE
-		WHEN umb.admin_number IS NOT NULL THEN
-		ua.admin_number
-		WHEN umb.MEMBER_number IS NOT NULL THEN
-		um.MEMBER_number
-		END AS
-		"write_number"
+			WHEN umb.admin_number IS NOT NULL THEN ua.admin_number
+			WHEN umb.MEMBER_number IS NOT NULL THEN um.MEMBER_number
+		END AS "write_number"
 		FROM UB_MENTEE_BOARD UMB
-		LEFT JOIN
-		UB_MEMBER UM ON
-		UMB.member_number = UM.member_number
-		LEFT JOIN UB_ADMIN
-		UA ON
-		UMB.admin_number = UA.admin_number
-		LEFT JOIN UB_FILE UF ON
-		UMB.FILE_NUMBER = UF.FILE_NUMBER
-		WHERE UMB.MENTEEBOARD_NUMBER =
-		#{boardNumber}
+		LEFT JOIN UB_MEMBER UM ON UMB.member_number = UM.member_number
+		LEFT JOIN UB_ADMIN UA ON UMB.admin_number = UA.admin_number
+		LEFT JOIN UB_FILE UF ON UMB.FILE_NUMBER = UF.FILE_NUMBER
+		WHERE UMB.MENTEEBOARD_NUMBER = #{boardNumber}
 	</select>
 
 	<!-- 멘티 게시판 작성 -->
@@ -479,8 +467,7 @@
 	</select>
 	
 	<select id="matchingCancelSelect" resultType="AdMatchingListDTO">
-		SELECT 
-    	um.MATCHING_START, um.MATCHING_STATE,um.MATCHING_CANCEL
+		SELECT matching_number, TO_CHAR(um.MATCHING_START,'YYYY.MM.DD') AS MATCHING_START, um.MATCHING_STATE,um.MATCHING_CANCEL,
     	(SELECT um2.MEMBER_NAME
     	FROM UB_MEMBER um2
     	WHERE um2.MEMBER_NUMBER = um.MENTOR_NUMBER) AS "MENTOR_NAME",
@@ -489,8 +476,25 @@
      	WHERE um3.MEMBER_NUMBER = um.MENTEE_NUMBER) AS "MENTEE_NAME"
 		FROM UB_MATCHING um
 		WHERE matching_state='매칭 취소'
+		ORDER BY MATCHING_START desc
 	</select>
 	
+	<select id="matchingCancelSelectDetail" resultType="AdMatchingCancelDTO">
+		SELECT matching_number, um.MATCHING_START, um.MATCHING_STATE, TO_CHAR(um.MATCHING_CANCEL,'YYYY.MM.DD') AS MATCHING_CANCEL,um.MATCHING_CAN_REASON,	
+    	(SELECT um2.MEMBER_NAME
+    	FROM UB_MEMBER um2
+    	WHERE um2.MEMBER_NUMBER = um.MENTOR_NUMBER) AS "MENTOR_NAME",
+    	(SELECT um3.MEMBER_NAME
+     	FROM UB_MEMBER um3
+     	WHERE um3.MEMBER_NUMBER = um.MENTEE_NUMBER) AS "MENTEE_NAME"
+		FROM UB_MATCHING um
+		WHERE matching_state='매칭 취소' AND matching_number=#{matchingNumber}
+		ORDER BY MATCHING_START desc
+	</select>
+	
+	<delete id="matchingDelete">
+		delete from UB_matching where matching_number=#{matchingNumber}
+	</delete>
 	
 	
 		
