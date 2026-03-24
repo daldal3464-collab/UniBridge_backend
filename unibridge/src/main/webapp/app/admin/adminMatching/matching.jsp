@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,89 +17,72 @@
       <div id="header-wrap"></div>
       <div class="content-container">
         <div class="title-container">
-          <span>취소 신청 내역</span>
+          <!-- <span>취소 신청 내역</span> -->
         </div>
         <div class="matching-user-container">
           <div class="matching-user-container__inner">
             <div class="matching-user-header-container">
-              <div class="all">전체</div>
+<!--               <div class="all">전체</div>
               <div class="pending-cancel">취소 신청 중</div>
-              <div class="cancel">취소 완료</div>
+              <div class="cancel">취소 완료</div> -->
+              <span>취소 신청 내역</span>
             </div>
             <div class="vertical-line"></div>
             <div class="list-desc-container">
-              <span>총 3건</span>
+              <span>총 ${total}건</span>
             </div>
             <ul class="list-user-container">
-              <li class="list-user-content">
-                <div class="user-title-container">
-                  <span class="user-title-date">2026.03.03 (화)</span>
-                  <span class="user-detail">매칭 상세</span>
-                </div>
-                <div class="user-content-container">
-                  <div class="status">취소 신청 중</div>
-                  <div class="vertical-line-container">
-                    <div class="vertical-line"></div>
-                  </div>
-                  <div class="match-container">
-                    <div class="icon"><img src = "${pageContext.request.contextPath}/assets/img/admin/matchingIcon.png"></div>
-                    <div class="desc-container">
-                      <div class="mentor-to-mentee">
-                        <div class="mentee">멘티</div>
-                        <span class="arrow">→</span>
-                        <div class="mentor">멘토</div>
-                      </div>
-                      <div class="mentor-to-mentee-name">
-                        <div class="mentee">멘티이름</div>
-                        <span class="arrow">→</span>
-                        <div class="mentor">멘토이름</div>
-                      </div>
-                      <div class="start-date">매칭 시작 <span>2025.11.15</span></div>
-                    </div>
-                  </div>
-                  <div class="vertical-line-container">
-                    <div class="vertical-line"></div>
-                  </div>
-                  <div class="button-container">
-                    <div class="match-cancel-button">매칭 취소</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="list-user-content">
-                <div class="user-title-container">
-                  <span class="user-title-date">2026.03.03 (화)</span>
-                  <span class="user-detail">매칭 상세</span>
-                </div>
-                <div class="user-content-container">
-                  <div class="status">취소 신청 중</div>
-                  <div class="vertical-line-container">
-                    <div class="vertical-line"></div>
-                  </div>
-                  <div class="match-container">
-                    <div class="icon"><img src = "${pageContext.request.contextPath}/assets/img/admin/matchingIcon.png"></div>
-                    <div class="desc-container">
-                      <div class="mentor-to-mentee">
-                        <div class="mentee">멘티</div>
-                        <span class="arrow">→</span>
-                        <div class="mentor">멘토</div>
-                      </div>
-                      <div class="mentor-to-mentee-name">
-                        <div class="mentee">멘티이름</div>
-                        <span class="arrow">→</span>
-                        <div class="mentor">멘토이름</div>
-                      </div>
-                      <div class="start-date">매칭 시작 <span>2025.11.15</span></div>
-                    </div>
-                  </div>
-                  <div class="vertical-line-container">
-                    <div class="vertical-line"></div>
-                  </div>
-                  <div class="button-container">
-                    <div class="match-cancel-button">매칭 취소</div>
-                  </div>
-                </div>
-              </li>
+            
+		<c:choose>
+			<c:when test="${not empty matchingList}">
+				<c:forEach var="matching" items="${matchingList}">
+				<li class="list-user-content">
+	                <div class="user-title-container">
+	                  <span class="user-title-date">
+	                  	<c:out value ="${matching.matchingStart}" />
+	                  </span>
+	                  
+	                  <span class="user-detail">매칭 상세</span>
+	                </div>
+	                
+	                <div class="user-content-container">
+	                  <div class="status">
+	                  	<c:out value="${matching.state}" />
+	                  </div>
+	                  
+	                  <div class="vertical-line-container">
+	                    <div class="vertical-line"></div>
+	                  </div>
+	                  
+	                  <div class="match-container">
+	                    <div class="icon"><img src = "${pageContext.request.contextPath}/assets/img/admin/matchingIcon.png"></div>
+	                    
+	                    <div class="desc-container">
+	                      <div class="mentor-to-mentee">
+	                        <div class="mentee">멘티</div>
+	                        <span class="arrow">→</span>
+	                        <div class="mentor">멘토</div>
+	                      </div>
+	                      
+	                      <div class="mentor-to-mentee-name">
+	                        <div class="mentee"><c:out value="${matching.mentorName}" /></div>
+	                        <span class="arrow">→</span>
+	                        <div class="mentor"><c:out value="${matching.menteeName}" /></div>
+	                      </div>
+	                      <div class="start-date">매칭 시작 <span><c:out value="${matching.matchingStart}" /></span></div>
+	                    </div>
+	                  </div>
+	                  <div class="vertical-line-container">
+	                    <div class="vertical-line"></div>
+	                  </div>
+	                  <div class="button-container">
+	                    <div class="match-cancel-button">매칭 취소</div>
+	                  </div>
+	                </div>
+	              </li>
+		       </c:forEach>
+		   </c:when>
+		</c:choose>
             </ul>
           </div>
         </div>

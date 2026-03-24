@@ -470,4 +470,29 @@
 		where
 		noticeBoard_number=#{noticeboardNumber}
 	</delete>
+	
+	<!-- 매칭 -->
+	<select id="matchingCancelTotal" resultType="int">
+		SELECT count(*)
+  		FROM UB_Matching
+ 		WHERE matching_State='매칭 취소'
+	</select>
+	
+	<select id="matchingCancelSelect" resultType="AdMatchingListDTO">
+		SELECT 
+    	um.MATCHING_START, um.MATCHING_STATE,um.MATCHING_CANCEL
+    	(SELECT um2.MEMBER_NAME
+    	FROM UB_MEMBER um2
+    	WHERE um2.MEMBER_NUMBER = um.MENTOR_NUMBER) AS "MENTOR_NAME",
+    	(SELECT um3.MEMBER_NAME
+     	FROM UB_MEMBER um3
+     	WHERE um3.MEMBER_NUMBER = um.MENTEE_NUMBER) AS "MENTEE_NAME"
+		FROM UB_MATCHING um
+		WHERE matching_state='매칭 취소'
+	</select>
+	
+	
+	
+		
+	
 </mapper>

@@ -2,15 +2,17 @@ package com.unibridge.app.admin.dto;
 
 public class AdMatchingCancelDTO {
 //	CREATE TABLE UB_MATCHING (
-//		    matching_number  NUMBER NOT NULL,
-//		    matching_start   DATE DEFAULT SYSDATE NOT NULL,
-//		    matching_state   VARCHAR2(20) NOT NULL CHECK (matching_state IN ('매칭됨','매칭 진행중', '매칭 취소')),
-//		    mentor_number    NUMBER NOT NULL,
-//		    mentee_number    NUMBER NOT NULL,
-//		    subject_number   NUMBER NOT NULL,
-//		    matching_cancel  DATE,
-//			matching_can_reason  VARCHAR(1024),
-//		    CONSTRAINT pk_ub_mt PRIMARY KEY (matching_number),
+//		    matching_number      NUMBER        NOT NULL,
+//		    matching_start       DATE          DEFAULT SYSDATE NOT NULL,
+//		    matching_state       VARCHAR2(20)  DEFAULT '매칭중' NOT NULL CHECK (matching_state IN ('매칭중', '매칭 취소')),
+//		    mentor_number        NUMBER        NOT NULL,
+//		    mentee_number        NUMBER        NOT NULL,
+//		    subject_number       NUMBER        NOT NULL,
+//		    pay_id               NUMBER        NOT NULL,
+//		    matching_cancel      DATE,
+//		    matching_can_reason  VARCHAR2(1024),
+//		    CONSTRAINT pk_ub_matching PRIMARY KEY (matching_number),
+//		    CONSTRAINT fk_ub_mt_pay FOREIGN KEY (pay_id) REFERENCES UB_PAY(pay_id),
 //		    CONSTRAINT fk_ub_mt_subject FOREIGN KEY (subject_number) REFERENCES UB_SUBJECT(subject_number),
 //		    CONSTRAINT fk_ub_mt_mentor FOREIGN KEY (mentor_number) REFERENCES UB_MEMBER(member_number),
 //		    CONSTRAINT fk_ub_mt_mentee FOREIGN KEY (mentee_number) REFERENCES UB_MEMBER(member_number)
@@ -25,6 +27,7 @@ public class AdMatchingCancelDTO {
 	private int menteeNumber;
 	private String menteeName;
 	private int subjectNumber;
+	private int payId;
 	private String subjectName;
 	private String matchingCancel;
 	private String matching_can_reason;
@@ -62,6 +65,12 @@ public class AdMatchingCancelDTO {
 	}
 	public String getMatching_can_reason() {
 		return matching_can_reason;
+	}
+	public int getPayId() {
+		return payId;
+	}
+	public void setPayId(int payId) {
+		this.payId = payId;
 	}
 	
 	

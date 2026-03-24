@@ -47,6 +47,8 @@
       <typeAlias type="com.unibridge.app.admin.dto.AdNoticeBoardDTO" alias="AdNoticeBoardDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.admin.dto.AdMenteeBoardCommentDTO" alias="AdMenteeBoardCommentDTO"></typeAlias>
       <typeAlias type="com.unibridge.app.admin.dto.AdMentorBoardCommentDTO" alias="AdMentorBoardCommentDTO"></typeAlias>
+      <typeAlias type="com.unibridge.app.admin.dto.AdMatchingListDTO" alias="AdMatchingListDTO"></typeAlias>
+      <typeAlias type="com.unibridge.app.admin.dto.AdMatchingCancelDTO" alias="AdMatchingCancelDTO"></typeAlias>
 
 
       

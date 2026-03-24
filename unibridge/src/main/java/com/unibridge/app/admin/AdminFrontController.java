@@ -12,6 +12,7 @@ import com.unibridge.app.admin.controller.AdminLoginController;
 import com.unibridge.app.admin.controller.AdminLoginOkController;
 import com.unibridge.app.admin.controller.AdminLogoutOkController;
 import com.unibridge.app.admin.controller.AdminMainController;
+import com.unibridge.app.admin.controller.AdminMatchingListController;
 import com.unibridge.app.admin.controller.AdminMenteeBoardController;
 import com.unibridge.app.admin.controller.AdminMenteeBoardDeleteOkController;
 import com.unibridge.app.admin.controller.AdminMenteeBoardDetailController;
@@ -240,7 +241,12 @@ public class AdminFrontController extends HttpServlet {
 	    	System.out.println("공지 삭제 완료");
 	    	break;
 	    	
-	    	
+	    case "matching.admin":
+	    case "/matching.admin":
+	    	System.out.println("매칭 취소 목록 화면 출력 준비");
+	    	result = new AdminMatchingListController().execute(request, response);
+	    	System.out.println("매칭 취소 목록 화면 출력 완료");
+	    	break;
 	    
 	    	
 	    	
