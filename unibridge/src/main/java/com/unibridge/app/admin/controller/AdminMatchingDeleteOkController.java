@@ -24,7 +24,7 @@ public class AdminMatchingDeleteOkController implements Execute {
 		matchingDAO.delete(Integer.parseInt(matchingNumber));
 		
 		
-		result.setPath(request.getContextPath()+"/app/admin/adminMatching/matching.admin");
+		result.setPath(request.getContextPath()+"/matching.admin");
 		result.setRedirect(true);
 		return result;
 	}

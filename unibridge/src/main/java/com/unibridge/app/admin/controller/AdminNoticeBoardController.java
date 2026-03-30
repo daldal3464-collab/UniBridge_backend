@@ -87,10 +87,7 @@ public class AdminNoticeBoardController implements Execute{
 				System.out.println("pageFilter : " + pageFilter);
 				boardList = boardDAO.selectDateFilter(pageFilter);
 
-			}
-
-
-			
+			}	
 		}else{
 			
 			if(!boardType.trim().isEmpty()){

@@ -79,7 +79,7 @@
         </article>
 
         <article class="summary-card">
-          <h2>매칭 수</h2>
+          <h2>진행 중인 매칭 수</h2>
           <p class="summary-value" id="matchingCount"></p>
         </article>
       </section>

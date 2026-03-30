@@ -26,15 +26,16 @@
 		</div>
 
 		<div class="detail-meta">
-			<span>작성자 ${board.getWriteNickname()}</span> <span>작성일
-				${board.boardDate}</span> <span>조회수 ${board.boardClick}</span> <span>댓글
-				${commentList.size()}</span>
+			<span>작성자 ${board.getWriteNickname()}</span>
+			<span>작성일 ${board.boardDate}</span>
+			<span>조회수 ${board.boardClick}</span>
+			<span>댓글 ${commentList.size()}</span>
 		</div>
 
 		<div class="detail-content-box">${board.boardContent}</div>
 
 		<div class="detail-actions">
-			<button class="btn" onclick="history.back()">목록</button>
+			<button class="btn"  onclick= 'location.href = "${pageContext.request.contextPath}/mentorBoardList.admin"'>목록</button>
 			<div id="postActions" style="display: flex; gap: 12px;"></div>
 		</div>
 
@@ -50,14 +51,12 @@
 								<div class="comment-content">${comment.mentorComContent}</div>
 							</div>
 							<div class="comment-date">${comment.mentorComDate}</div>
-							<button class="btn btn-red"
-								onclick="deleteComment(${comment.mentorComNumber})">삭제</button>
+							<button class="btn btn-red" data-comment-number="${comment.mentorComNumber}">삭제</button>
 						</div>
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
-					<p style="text-align: center; color: #888; padding: 20px;">등록된
-						댓글이 없습니다.</p>
+					<p style="text-align: center; color: #888; padding: 20px;">등록된 댓글이 없습니다.</p>
 				</c:otherwise>
 			</c:choose>
 		</div>

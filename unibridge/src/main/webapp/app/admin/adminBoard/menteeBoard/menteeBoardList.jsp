@@ -26,9 +26,9 @@
     <!-- 필터 행 -->
     <div class="filter-row" >
       <div class="filter-date">
-        <input type="date" class="input-date" id="dateFrom" value = "${session.dateFrom}"/>
+        <input type="date" class="input-date" id="dateFrom" value = "${sessionScope.dateFrom}"/>
         <span class="tilde">~</span>
-        <input type="date" class="input-date" id="dateTo" value = "${session.dateTo}"/>
+        <input type="date" class="input-date" id="dateTo" value = "${sessionScope.dateTo}"/>
       </div>
       <button class="btn" id="btnSearch">조회</button>
       <button class="btn btn-primary" id="btnWrite">+ 게시글 작성</button>

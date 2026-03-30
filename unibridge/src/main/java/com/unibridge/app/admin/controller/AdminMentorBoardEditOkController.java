@@ -39,7 +39,7 @@ public class AdminMentorBoardEditOkController implements Execute{
 
 		
 		// 수정 완료 후 페이지 이동
-		String path = request.getContextPath() + "/app/admin/adminBoard/mentorBoard/mentorBoardList.admin";
+		String path = request.getContextPath() + "/mentorBoardList.admin";
 		result.setPath(path);
 		result.setRedirect(true);
 		

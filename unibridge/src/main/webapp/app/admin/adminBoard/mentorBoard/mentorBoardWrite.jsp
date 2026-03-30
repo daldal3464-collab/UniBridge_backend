@@ -41,6 +41,7 @@
   <!-- 버튼 -->
     <div class="form-actions">
      <button type="submit" class="btn btn-primary" id="btnSubmit">등록</button>
+     <button type="button" class="btn btn-primary" id="btnCancel">취소</button>
     </div>
 
    </form>
@@ -57,5 +58,10 @@
       document.body.appendChild(s);
     });
 </script>
+
+  <script>
+  const contextPath =  "${pageContext.request.contextPath}";
+  </script>
+
 </body>
 </html>

@@ -28,9 +28,10 @@
 
 		<!-- 메타 (날짜·조회수·댓글수) -->
 		<div class="detail-meta">
-			<span>작성자 ${board.getWriteNickname()}</span> <span>작성일
-				${board.boardDate}</span> <span>조회수 ${board.boardClick}</span> <span>댓글
-				${commentList.size()}</span>
+			<span>작성자 ${board.getWriteNickname()}</span>
+			<span>작성일	${board.boardDate}</span>
+			<span>조회수 ${board.boardClick}</span>
+			<span>댓글 ${commentList.size()}</span>
 		</div>
 
 		<!-- 본문 -->
@@ -38,7 +39,7 @@
 
 		<!-- 목록 + 삭제 버튼 행 -->
 		<div class="detail-actions">
-			<button class="btn" onclick="history.back()">목록</button>
+			<button class="btn" onclick= 'location.href = "${pageContext.request.contextPath}/menteeBoardList.admin"'>목록</button>
 			<div id="postActions" style="display: flex; gap: 12px;"></div>
 		</div>
 
@@ -56,8 +57,7 @@
 								<div class="comment-content">${comment.menteeComContent}</div>
 							</div>
 							<div class="comment-date">${comment.menteeComDate}</div>
-							<button class="btn btn-red"
-								onclick="deleteComment(${comment.menteeComNumber})">삭제</button>
+							<button class="btn btn-red commentDelBtn" data-comment-number="${comment.menteeComNumber}">삭제</button>
 						</div>
 					</c:forEach>
 				</c:when>
@@ -81,9 +81,10 @@
 	</script>
 	
 	<script>
-		const writeNumber = ${board.writeNumber};
-		const sessionNumber = ${loginMemberNumber};
-		const boardNumber = ${board.menteeboardNumber};
+		const writeNumber = "${board.writeNumber}";
+		const sessionNumber = "${loginMemberNumber}";
+		const boardNumber = "${board.menteeboardNumber}";
+		const contextPath = "${pageContext.request.contextPath}";
 	</script>
 
 </body>

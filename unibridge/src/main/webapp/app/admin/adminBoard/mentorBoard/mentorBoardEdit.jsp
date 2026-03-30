@@ -11,7 +11,7 @@
 
   <div id="header-wrap"></div>
 
-  <form method="post" action="${pageContext.request.contextPath}/mentorBoardEditOk.admin" class="form-wrap">
+  <form method="post" action="${pageContext.request.contextPath}/mentorBoardEditOk.admin" class="form-wrap" id="editForm">
     <h1 class="page-title">게시판 관리</h1>
     <h1 class="page-title">수정하기</h1>
 
@@ -33,7 +33,7 @@
     <!-- 버튼 -->
     <div class="form-actions">
       <button type="submit" class="btn btn-blue" id="btnSave">저장</button>
-      <button type="button" class="btn btn-red" id="btnEditCancel">취소</button>
+      <button type="button" class="btn btn-red" id="btnEditCancel" data-board-number = "${board.mentorboardNumber}">취소</button>
     </div>
   </form>
 

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnCancel").addEventListener("click", e =>{
 	
 	if(confirm("작성을 취소하시겠습니까?")){
-		window.location.href ="/noticeList.admin";
+		window.location.href =`${contextPath}/noticeList.admin`;
 	}
 	
   });
