@@ -31,9 +31,8 @@ public class MentoringWriteOkController implements Execute {
 		Object loginUserObj = session.getAttribute("memberNumber");
 		long mentorNumber = Long.parseLong(String.valueOf(loginUserObj != null ? loginUserObj : 21L));
 
-		// 1. 저장 경로 설정 (mentoring 폴더 추가)
 		String uploadPath = request.getServletContext().getRealPath("/") + "upload/mentoring/";
-		int fileSize = 1024 * 1024 * 10; // 10MB로 상향
+		int fileSizeLimit = 1024 * 1024 * 10; // 10MB
 
 		try {
 			File uploadDir = new File(uploadPath);
@@ -41,48 +40,49 @@ public class MentoringWriteOkController implements Execute {
 				uploadDir.mkdirs();
 			}
 
-			// 2. 파일 업로드 실행 (이 시점에 파일이 서버에 저장됨)
-			MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSize, "UTF-8",
+			MultipartRequest multi = new MultipartRequest(request, uploadPath, fileSizeLimit, "UTF-8",
 					new DefaultFileRenamePolicy());
 
-			// 3. 파일명 변경 로직 적용
+			// 3. 파일 정보 추출 및 DTO 세팅
 			Enumeration<String> files = multi.getFileNames();
-			String finalFileName = "";
 
 			if (files.hasMoreElements()) {
-				String name = files.nextElement();
-				String systemName = multi.getFilesystemName(name); // 서버에 저장된 이름
-				String originalName = multi.getOriginalFileName(name); // 실제 파일명
-
-				if (systemName != null) {
-					// 규칙: 현재시간_멤버번호_원본이름 (파일명 중복 방지 및 규칙 준수)
-					finalFileName = System.currentTimeMillis() + "_" + mentorNumber + "_" + originalName;
-
-					File oldFile = new File(uploadPath + systemName);
-					File newFile = new File(uploadPath + finalFileName);
-					oldFile.renameTo(newFile); // 파일명 변경 실행
-					System.out.println("[Log] 파일명 변경 완료: " + finalFileName);
-				}
+			    String name = files.nextElement();
+			    File file = multi.getFile(name);
+			    
+			    if (file != null) {
+			        // 원본 파일명을 가져와서 세팅
+			        String originalFileName = multi.getOriginalFileName(name); 
+			        long size = file.length();
+			        String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+			        
+			        mentoringDTO.setFileOriginalName(originalFileName); //
+			        mentoringDTO.setFileExtension(extension); //
+			        mentoringDTO.setFileSize(size); //
+			        
+			        System.out.println("[Log] 파일 정보 추출 완료: " + originalFileName);
+			    }
 			}
 
-			// 4. 데이터 세팅
-			mentoringDTO.setMentorNumber(mentorNumber);
-			mentoringDTO.setSubjectNumber(Integer.parseInt(multi.getParameter("mentoringSubject")));
-			mentoringDTO.setMentoringTitle(multi.getParameter("mentoringTitle"));
-			mentoringDTO.setMentoringGoal(multi.getParameter("mentoringPurpose"));
-			mentoringDTO.setMentoringDetail(multi.getParameter("mentoringCurriculum"));
-			mentoringDTO.setFileName(finalFileName); // 가공된 파일명을 DTO에 저장
+			// 4. 일반 데이터 세팅 (여기서 다시 덮어쓰지 않도록 주의)
+			mentoringDTO.setMentorNumber(mentorNumber); //
+			mentoringDTO.setSubjectNumber(Integer.parseInt(multi.getParameter("mentoringSubject"))); //
+			mentoringDTO.setMentoringTitle(multi.getParameter("mentoringTitle")); //
+			mentoringDTO.setMentoringGoal(multi.getParameter("mentoringPurpose")); //
+			mentoringDTO.setMentoringDetail(multi.getParameter("mentoringCurriculum")); //
 
 			// 5. 중복 체크 및 DB Insert
-			int existingCount = mentoringDAO.checkAlreadyExists(mentorNumber);
+			int existingCount = mentoringDAO.checkAlreadyExists(mentorNumber); //
 			if (existingCount > 0) {
 				result.setPath(request.getContextPath() + "/mvc/auth/mentor/myPage.my?error=already_exists");
 				result.setRedirect(true);
 				return result;
 			}
 
-			mentoringDAO.insert(mentoringDTO); // Mapper에서 UB_FILE과 UB_MENTORING 동시 처리 권장
+			// DAO를 통해 DB 저장 실행
+			mentoringDAO.insert(mentoringDTO); 
 
+			// 성공 시 상세보기 페이지로 이동
 			long createdNumber = mentoringDTO.getMentoringNumber();
 			result.setPath(request.getContextPath() + "/mvc/auth/mentor/mentoring.my?type=view&mentoringNumber="
 					+ createdNumber);

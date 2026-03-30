@@ -60,13 +60,13 @@
 										<label>학습 과목</label> <select name="mentoringSubject"
 											id="mentoringSubject">
 											<option value="none">선택하세요</option>
-											<option value="1">자바</option>
-											<option value="2">파이썬</option>
-											<option value="3">국어</option>
-											<option value="4">수학</option>
-											<option value="5">C++</option>
-											<option value="6">C언어</option>
-											<option value="7">영어</option>
+											<option value="1">국어</option>
+											<option value="2">수학</option>
+											<option value="3">영어</option>
+											<option value="4">자바</option>
+											<option value="5">파이썬</option>
+											<option value="6">C++</option>
+											<option value="7">C언어</option>
 											<option value="8">게임</option>
 										</select>
 									</div>
@@ -100,18 +100,7 @@
 									</div>
 								</div>
 							</div>
-
-							<div id="profile">
-								<a href="#"> 
-									<img src="${pageContext.request.contextPath}/assets/img/user/userProfile/userIcon.png" alt="아이콘"> 
-									<img src="/upload/profile/${member.MEMBER_IMG != null ? member.MEMBER_IMG : 'default.png'}?t=<%=System.currentTimeMillis()%>" 
-										     alt="유저의 프로필 사진" 
-										     id="profileDisplay"
-										     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/img/user/userProfile/default.png';">
-								</a>
-							</div>
 						</div>
-
 						<div id="buttons">
 							<button type="submit">등록</button>
 							<button type="reset">취소</button>

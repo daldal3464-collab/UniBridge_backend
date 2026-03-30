@@ -91,11 +91,11 @@
 										<div id="curriculumFileTitle">첨부 파일</div>
 										<div id="curriculumFile">
 											<c:choose>
-												<c:when test="${not empty mentoring.fileName}">
+												<c:when test="${not empty mentoring.fileOriginalName}">
 													<a
-														href="${pageContext.request.contextPath}/download.file?fileName=${mentoring.fileName}"
+														href="${pageContext.request.contextPath}/download.file?fileName=${mentoring.fileOriginalName}"
 														style="color: #4f73e3; font-size: 13px;">
-														${mentoring.fileName} (다운로드) </a>
+														${mentoring.fileOriginalName} </a>
 												</c:when>
 												<c:otherwise>
 													<span style="font-size: 12px; color: #888;">첨부된 파일이
@@ -107,24 +107,6 @@
 								</div>
 							</div>
 
-							<%-- 프로필 영역: Modify와 동일하게 사진 유무에 따라 크기 조절 --%>
-							<div id="profile">
-								<a
-									href="${pageContext.request.contextPath}/mvc/auth/mentor/myPage.my">
-									<c:choose>
-										<c:when test="${not empty mentoring.fileName}">
-											<img id="profileImg"
-												src="${pageContext.request.contextPath}/display.file?fileName=${mentoring.fileName}"
-												alt="멘토 프로필">
-										</c:when>
-										<c:otherwise>
-											<img
-												src="${pageContext.request.contextPath}/assets/img/user/userProfile/userIcon.png"
-												alt="기본 아이콘">
-										</c:otherwise>
-									</c:choose>
-								</a>
-							</div>
 						</div>
 
 						<%-- 하단 버튼: Modify로 이동하거나 삭제 실행 --%>

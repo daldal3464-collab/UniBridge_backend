@@ -74,7 +74,7 @@ public class MentoringModifyOkController implements Execute {
 
 			// 새 파일이 업로드된 경우에만 파일명 세팅
 			if (finalFileName != null) {
-				dto.setFileName(finalFileName);
+				dto.setFileOriginalName(finalFileName);
 			}
 
 			// 6. DB 업데이트 실행

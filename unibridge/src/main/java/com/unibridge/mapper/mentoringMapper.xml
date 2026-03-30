@@ -12,27 +12,32 @@
 		m.MENTORING_GOAL as mentoringGoal,
 		m.MENTORING_DETAIL as mentoringDetail,
 		m.FILE_NUMBER as fileNumber,
-		f.FILE_NAME as fileName
-		FROM UB_MENTORING m
-		LEFT JOIN UB_FILE f ON
-		m.FILE_NUMBER =
-		f.FILE_NUMBER
+		f.FILE_ORIGINAL_NAME as fileOriginalName FROM UB_MENTORING m
+		LEFT JOIN
+		UB_FILE f ON m.FILE_NUMBER = f.FILE_NUMBER
 		WHERE m.MENTORING_NUMBER =
 		#{mentoringNumber}
 	</select>
 
 	<insert id="insert" parameterType="MentoringDTO">
-		<selectKey keyProperty="mentoringNumber" resultType="long"
+		<selectKey keyProperty="fileNumber" resultType="long"
 			order="BEFORE">
-			SELECT SEQ_MENTORING.NEXTVAL FROM DUAL
+			SELECT NVL(MAX(FILE_NUMBER), 0) + 1 FROM UB_FILE
 		</selectKey>
 
 		INSERT ALL
 		INTO UB_FILE (
-		FILE_NUMBER, FILE_NAME, FILE_PATH, CATEGORY
-		)
-		VALUES (
-		#{fileNumber}, #{fileName}, '/upload/mentoring/', 'mentoring'
+		FILE_NUMBER,
+		FILE_NAME,
+		FILE_ORIGINAL_NAME,
+		FILE_EXTENSION,
+		FILE_SIZE,
+		FILE_PATH
+		) VALUES (
+		#{fileNumber},
+		#{fileOriginalName}, #{fileOriginalName}, #{fileExtension},
+		#{fileSize},
+		'/upload/mentoring/'
 		)
 		INTO UB_MENTORING (
 		MENTORING_NUMBER,
@@ -45,7 +50,7 @@
 		CREATED_AT,
 		UPDATED_AT
 		) VALUES (
-		#{mentoringNumber},
+		(SELECT NVL(MAX(MENTORING_NUMBER), 0) + 1 FROM UB_MENTORING),
 		#{mentorNumber},
 		#{subjectNumber},
 		#{mentoringTitle},
@@ -55,6 +60,7 @@
 		CURRENT_TIMESTAMP,
 		CURRENT_TIMESTAMP
 		)
+		SELECT * FROM DUAL
 	</insert>
 
 	<update id="update" parameterType="MentoringDTO">
@@ -68,7 +74,8 @@
 			FILE_NUMBER = #{fileNumber},
 		</if>
 		UPDATED_AT = CURRENT_TIMESTAMP
-		WHERE MENTORING_NUMBER = #{mentoringNumber}
+		WHERE MENTORING_NUMBER =
+		#{mentoringNumber}
 	</update>
 
 	<delete id="delete" parameterType="long">
