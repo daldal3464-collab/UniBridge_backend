@@ -25,4 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
             writeForm.submit(); 
         });
     }
+
+	document.getElementById("btnCancel").addEventListener("click",(e) => {
+		if(confirm("작성을 취소하시겠습니까?")){
+		window.location.href = `${contextPath}/${boardType}BoardList.admin`};
+	})
+	
 });

@@ -45,7 +45,7 @@ public class AdminMenteeBoardWriteOkController implements Execute {
 		System.out.println("생성된 게시글 번호 : " + boardNumber);
 		
 		
-		result.setPath(request.getContextPath()+"/app/admin/adminBoard/menteeBoard/menteeBoardList.admin");
+		result.setPath(request.getContextPath()+"/menteeBoardList.admin");
 		result.setRedirect(true);
 		
 		return result;

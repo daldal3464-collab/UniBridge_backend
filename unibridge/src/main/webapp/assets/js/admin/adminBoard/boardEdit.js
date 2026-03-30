@@ -18,9 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   const btnEditCancel = document.getElementById("btnEditCancel");
+  const boardNumber = btnEditCancel.dataset.boardNumber;
     btnEditCancel.addEventListener("click", () => {
-      if (confirm("게시글 작성을 취소하시겠습니까?")) {
-        location.href = `${boardType}BoardDetail.admin?boardNumber=${boardNumber}`;
+      if (confirm("게시글 수정을 취소하시겠습니까?")) {
+        location.href = `${contextPath}/${boardType}BoardDetail.admin?boardNumber=${boardNumber}`;
       }
     });
 

@@ -54,6 +54,7 @@
                     <textarea class="match-cancel-desc-content" readonly>${matchingCancel.matchingCanReason}</textarea>
                   </div>
                   <div class="match-cancel-button-container">
+                   	<div class="match-list-button">목록</div>
                     <div class="match-cancel-button" data-matching-number="${matchingCancel.matchingNumber}">매칭 취소</div>
                   </div>
                 </div>

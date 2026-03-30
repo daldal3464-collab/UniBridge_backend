@@ -22,7 +22,7 @@
     <div class="filter-row">
       <!-- 왼쪽: 종류 -->
       <div class="filter-left">
-        <div class="type-wrap">
+       	<div class="type-wrap">
           <button class="btn-type" id="btnType">종류 ▼</button>
         <div id="typeDropdown">
 		  <button class="board_type" onclick="location.href='${pageContext.request.contextPath}/app/admin/adminNotice/noticeList.admin?page=1&dateFrom=${dateFrom}&dateTo=${dateTo}&boardType='">전체</button>
@@ -34,9 +34,9 @@
 
       <!-- 오른쪽: 날짜 + 조회 + 등록 -->
       <div class="filter-right">
-        <input type="date" class="input-date" id="dateFrom" />
+        <input type="date" class="input-date" id="dateFrom" value = "${sessionScope.dateFrom}">       
         <span class="tilde">~</span>
-        <input type="date" class="input-date" id="dateTo" />
+        <input type="date" class="input-date" id="dateTo" value = "${sessionScope.dateTo}" />
         <button class="btn" id="btnSearch">조회</button>
         <button class="btn btn-primary" id="btnWrite">+ 새 공지사항 등록</button>
       </div>

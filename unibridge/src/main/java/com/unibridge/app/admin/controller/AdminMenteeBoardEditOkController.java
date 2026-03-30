@@ -39,7 +39,7 @@ public class AdminMenteeBoardEditOkController implements Execute{
 
 		
 		// 수정 완료 후 페이지 이동
-		String path = request.getContextPath() + "/app/admin/adminBoard/menteeBoard/menteeBoardList.admin";
+		String path = request.getContextPath() + "/menteeBoardList.admin";
 		result.setPath(path);
 		result.setRedirect(true);
 		

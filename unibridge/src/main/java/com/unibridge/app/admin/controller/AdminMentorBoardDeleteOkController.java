@@ -26,7 +26,7 @@ public class AdminMentorBoardDeleteOkController implements Execute{
 		boardDAO.deleteBoard(boardNumber);
 		System.out.println("게시글 삭제 완료");
 		
-		String path = request.getContextPath() + "/app/admin/adminBoard/mentorBoard/mentorBoardList.admin";
+		String path = request.getContextPath() + "/mentorBoardList.admin";
 		result.setPath(path);
 		result.setRedirect(true);
 		

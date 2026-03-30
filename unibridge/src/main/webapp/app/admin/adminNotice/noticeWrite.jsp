@@ -67,7 +67,11 @@
       document.body.appendChild(s);
     });
 </script>
-
   <script src="${pageContext.request.contextPath}/assets/js/admin/adminNotice/noticeWrite.js"></script>
+  
+  <script>
+  const contextPath =  "${pageContext.request.contextPath}";
+  </script>
+  
 </body>
 </html>

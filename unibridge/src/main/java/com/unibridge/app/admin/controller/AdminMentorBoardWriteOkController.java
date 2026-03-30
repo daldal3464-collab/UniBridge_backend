@@ -45,7 +45,7 @@ public class AdminMentorBoardWriteOkController implements Execute {
 		System.out.println("생성된 게시글 번호 : " + boardNumber);
 		
 		
-		result.setPath(request.getContextPath()+"/app/admin/adminBoard/mentorBoard/mentorBoardList.admin");
+		result.setPath(request.getContextPath()+"/mentorBoardList.admin");
 		result.setRedirect(true);
 		
 		return result;
